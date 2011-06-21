@@ -21,6 +21,7 @@ public class PDFParser {
 		try {
 			
 			PDDocument pddDocument=PDDocument.load(new File(INPUT_FILE));
+			
 			PDFTextStripper textStripper=new PDFTextStripper();
 			textStripper.setSortByPosition(true);
 			
