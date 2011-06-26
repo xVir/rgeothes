@@ -5,6 +5,8 @@ package edu.ict.rgeothes.entity;
  */
 public class Location {
 
+	private Document document;
+	
 	
 	
 }
