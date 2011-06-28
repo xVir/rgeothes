@@ -44,6 +44,10 @@ public class Record {
 		belongTo.add(recordReference);
 	}
 	
+	public void addLocation(Location location){
+		locations.add(location);
+	}
+	
 	
 	public Name getPrimaryName(){
 		return names.get(0);
@@ -63,6 +67,7 @@ public class Record {
 				ApplicationContext.getInstance().getToStringStyle());
 		stringBuilder.append("qualifier",getQualifier());
 		stringBuilder.append("names", names, true);
+		stringBuilder.append("locations",locations,true);
 		return stringBuilder.toString();
 	}
 }

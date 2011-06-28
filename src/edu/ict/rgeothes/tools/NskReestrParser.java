@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrTokenizer;
 
 import edu.ict.rgeothes.entity.Name;
+import edu.ict.rgeothes.entity.Point;
 import edu.ict.rgeothes.entity.Record;
 
 public class NskReestrParser {
@@ -129,8 +130,11 @@ public class NskReestrParser {
 		String district = firstLine.nextToken();
 
 		String latitude = firstLine.nextToken();
+		double latitudeValue = latitudeFromString(latitude);
+		
 		String longitude = firstLine.nextToken();
-
+		double longitudeValue = longitudeFromString(longitude);
+		
 		String nomenclature = firstLine.nextToken();
 
 		// ---------------------------------------------------------------------------------------
@@ -164,12 +168,38 @@ public class NskReestrParser {
 		result.setQualifier(name);
 		result.addName(new Name(name, placeType, RU));
 
+		result.addLocation(new Point(latitudeValue, longitudeValue));
+		
 		for (String anotherName : anotherNames) {
 			result.addName(new Name(anotherName, placeType, RU));
 		}
 
 		return result;
 
+	}
+
+	private static double longitudeFromString(String longitudeString) {
+		// 84° 08' В.Д.
+		
+		int degrees = Integer.parseInt(longitudeString.substring(0,longitudeString.indexOf('°')));
+		int minutes = Integer.parseInt(longitudeString.substring(longitudeString.indexOf("° ")+2,
+				longitudeString.indexOf('\'')));
+		
+		double result = degrees + minutes/60.0;
+		
+		return result;
+	}
+
+	private static double latitudeFromString(String latitudeString) {
+		// 54° 56' С.Ш.
+		
+		int degrees = Integer.parseInt(latitudeString.substring(0,latitudeString.indexOf('°')));
+		int minutes = Integer.parseInt(latitudeString.substring(latitudeString.indexOf("° ")+2,
+				latitudeString.indexOf('\'')));
+		
+		double result = degrees + minutes/60.0;
+		
+		return result;
 	}
 
 	private static String getFirstTokenFromLine(String input) {
