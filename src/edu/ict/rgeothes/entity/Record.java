@@ -3,6 +3,7 @@ package edu.ict.rgeothes.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import edu.ict.rgeothes.ApplicationContext;
@@ -69,5 +70,14 @@ public class Record {
 		stringBuilder.append("names", names, true);
 		stringBuilder.append("locations",locations,true);
 		return stringBuilder.toString();
+	}
+	
+	@Override
+	public int hashCode() {
+		HashCodeBuilder hashCodeBuilder = new HashCodeBuilder();
+		
+		hashCodeBuilder.append(getQualifier());
+		
+		return hashCodeBuilder.toHashCode();
 	}
 }

@@ -14,6 +14,8 @@ import org.junit.Test;
 import com.itextpdf.text.pdf.parser.TextRenderInfo;
 
 import edu.ict.rgeothes.Thesaurus;
+import edu.ict.rgeothes.exceptions.DuplicateRecordException;
+import edu.ict.rgeothes.tools.NskReestrParser;
 
 public class ThesaurusTest {
 
@@ -57,63 +59,12 @@ public class ThesaurusTest {
            Усть-Сламанка
 		   
 		 */
-		
-		
+	
 		try {
-			FileReader fileReader = new FileReader(fileName);
-			
-			BufferedReader reader = new BufferedReader(fileReader);
-			
-			String first,second,third, forth;
-			
-			first = reader.readLine();
-			
-			while(StringUtils.isNotBlank(first)){
-				
-				if (first.startsWith("Стр.  ")) {
-					//skip 2 lines
-					reader.readLine();
-					first = reader.readLine();
-					continue;
-				}
-				
-				second = reader.readLine();
-				third = reader.readLine();
-				
-				forth = reader.readLine();
-				
-				if (forth.charAt(0) >= '0' && forth.charAt(0) <= '9') {
-					//it is next record
-					first = forth;
-					continue;
-				}
-				else{
-					//it is not the next record
-					//parsing forth string
-					System.out.println(forth);
-					
-					
-				}
-				
-				
-				first = reader.readLine();
-			}
-			
-			
-			
-			fileReader.close();
-			
-		} catch (FileNotFoundException e) {
-		
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			result.addRecords(NskReestrParser.readRecordsFormFile(fileName));
+		} catch (DuplicateRecordException e) {
 			e.printStackTrace();
 		}
-		
-		
-		
-		// TODO Auto-generated method stub
 		
 		return result;
 	}

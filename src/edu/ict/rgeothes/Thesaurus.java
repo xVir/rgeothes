@@ -1,6 +1,7 @@
 package edu.ict.rgeothes;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import edu.ict.rgeothes.entity.Document;
@@ -50,6 +51,23 @@ public class Thesaurus {
 		else{
 			throw new RecordNotFoundException();
 		}
+		
+	}
+
+	public void addRecords(List<Record> recordsToAdd) throws DuplicateRecordException {
+		for(Record rec : recordsToAdd){
+			addRecord(rec);
+		}
+		
+	}
+
+	private void addRecord(Record rec) throws DuplicateRecordException {
+		
+		if (records.containsKey(rec.getQualifier())) {
+			throw new DuplicateRecordException(rec);
+		}
+		
+		records.put(rec.getQualifier(), rec);
 		
 	}
 	

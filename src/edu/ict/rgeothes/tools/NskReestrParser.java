@@ -1,6 +1,8 @@
 package edu.ict.rgeothes.tools;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +28,23 @@ public class NskReestrParser {
 	 */
 	public static void main(String[] args) {
 
-		try {
-			List<String> fileContent = FileUtils.readLines(new File(
-					"input/novosib.txt"));
+		String inputFilePath = "input/novosib.txt";
+		
+		readRecordsFormFile(inputFilePath);
+		
 
+	}
+
+	public static List<Record> readRecordsFormFile(String inputFilePath) {
+		try {
+			
+			
+			List<String> fileContent = FileUtils.readLines(new File(
+					inputFilePath));
+
+//FileWriter fstream = new FileWriter("out.txt");
+//BufferedWriter writer = new BufferedWriter(fstream);
+			
 			List<Record> records = new ArrayList<Record>();
 
 			if (fileContent.size() > 0) {
@@ -48,7 +63,9 @@ public class NskReestrParser {
 								startIndex, endIndex));
 
 						System.out.println(record);
-
+	//					writer.append(record.toString());
+//						writer.append("\n");
+						
 						records.add(record);
 					} catch (Exception ex) {
 
@@ -64,10 +81,16 @@ public class NskReestrParser {
 			} else {
 				System.out.println("Nothing to do");
 			}
+			
+	//		writer.close();
+			
+			return records;
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		return null;
 	}
 
 	private static int getNextRecordIndex(List<String> fileContent,
