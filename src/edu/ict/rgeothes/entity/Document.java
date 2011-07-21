@@ -2,11 +2,21 @@ package edu.ict.rgeothes.entity;
 
 import java.util.Date;
 
-/*
+/**
  * Class representing document item
  */
 public class Document {
+	
+	public static final Document UNKNOWN_DOCUMENT = new Document("unknown document");
 
+	public Document(){
+		
+	}
+	
+	private Document(String description){
+		this.description = description;
+	}
+	
 	private String uri;
 	private String description;
 	

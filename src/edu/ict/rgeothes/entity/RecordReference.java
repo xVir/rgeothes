@@ -1,19 +1,33 @@
 package edu.ict.rgeothes.entity;
 
-/*
+/**
  * Class, used to link records
  */
 public class RecordReference {
 
 	public RecordReference() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	
+	public RecordReference(Record recordFrom, Record recordTo, Document document) {
+		super();
+		this.recordFrom = recordFrom;
+		this.recordTo = recordTo;
+		this.document = document;
+	}
+
+
+	/**
+	 * Record from which link begins 
+	 */
+	private Record recordFrom;
 	
-	private Record record;
+	/**
+	 * Record where link ends
+	 */
+	private Record recordTo;
 	
-	/*
+	/**
 	 * Document, assuring link between records
 	 */
 	private Document document;
@@ -22,8 +36,24 @@ public class RecordReference {
 		this.document = document;
 	}
 	
-	public void setRecord(Record record) {
-		this.record = record;
+	public Document getDocument() {
+		return document;
+	}
+
+	public void setRecordFrom(Record recordFrom) {
+		this.recordFrom = recordFrom;
+	}
+	
+	public Record getRecordFrom() {
+		return recordFrom;
+	}
+	
+	public void setRecordTo(Record recordTo) {
+		this.recordTo = recordTo;
+	}
+
+	public Record getRecordTo() {
+		return recordTo;
 	}
 	
 }
