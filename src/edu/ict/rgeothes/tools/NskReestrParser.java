@@ -3,12 +3,16 @@ package edu.ict.rgeothes.tools;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrTokenizer;
 
+import edu.ict.rgeothes.entity.Document;
 import edu.ict.rgeothes.entity.Name;
 import edu.ict.rgeothes.entity.Point;
 import edu.ict.rgeothes.entity.Record;
@@ -20,6 +24,8 @@ public class NskReestrParser {
 	private static final char TAB = '\t';
 
 	private static String[] documentBeginings = { "Снят с", "Изменился род", };
+	
+	private Map<String, Record> districts = new HashMap<String, Record>();
 
 	/**
 	 * @param args
@@ -28,14 +34,26 @@ public class NskReestrParser {
 
 		String inputFilePath = "input/novosib.txt";
 		
-		readRecordsFormFile(inputFilePath);
+		NskReestrParser parser = new NskReestrParser();
 		
+		parser.readRecordsFormFile(inputFilePath);
 
 	}
 
-	public static List<Record> readRecordsFormFile(String inputFilePath) {
+	public List<Record> readRecordsFormFile(String inputFilePath) {
 		try {
 			
+			
+			
+			Record russiaRecord = new Record();
+			russiaRecord.setPrimaryParent(Record.ROOT_RECORD, Document.UNKNOWN_DOCUMENT);
+			russiaRecord.setPrimaryName(new Name("Российская Федерация", "государство", RU));
+			russiaRecord.setQualifier("Российская Федерация");
+			
+			Record parentRecord = new Record();
+			parentRecord.setPrimaryParent(russiaRecord, Document.UNKNOWN_DOCUMENT);
+			parentRecord.setPrimaryName(new Name("Новосибирская область", "область", RU));
+			parentRecord.setQualifier("Новосибирская область");
 			
 			List<String> fileContent = FileUtils.readLines(new File(
 					inputFilePath));
@@ -58,7 +76,7 @@ public class NskReestrParser {
 
 					try {
 						Record record = getRecordFromLines(fileContent.subList(
-								startIndex, endIndex));
+								startIndex, endIndex),parentRecord);
 
 						System.out.println(record);
 	//					writer.append(record.toString());
@@ -66,7 +84,7 @@ public class NskReestrParser {
 						
 						records.add(record);
 					} catch (Exception ex) {
-
+						System.out.println("error: " + ex.getMessage());
 					}
 
 					startIndex = endIndex;
@@ -91,7 +109,7 @@ public class NskReestrParser {
 		return null;
 	}
 
-	private static int getNextRecordIndex(List<String> fileContent,
+	private int getNextRecordIndex(List<String> fileContent,
 			int startIndex) throws IllegalArgumentException {
 		String firstString = fileContent.get(startIndex);
 
@@ -126,7 +144,7 @@ public class NskReestrParser {
 		return false;
 	}
 
-	private static Record getRecordFromLines(List<String> lines) {
+	private Record getRecordFromLines(List<String> lines, Record parentRecord) {
 
 		Record result = new Record();
 
@@ -186,6 +204,20 @@ public class NskReestrParser {
 			}
 		}
 
+		Record districtRecord = new Record();
+		districtRecord.setPrimaryParent(parentRecord, Document.UNKNOWN_DOCUMENT);
+		districtRecord.setQualifier(district);
+		districtRecord.setPrimaryName(new Name(district, "район", RU));
+		
+		if (!districts.containsKey(districtRecord.getFullQualifier())) {
+			districts.put(districtRecord.getFullQualifier(), districtRecord);
+		}
+		else{
+			districtRecord = districts.get(districtRecord.getFullQualifier());
+		}
+		
+		result.setPrimaryParent(districtRecord, Document.UNKNOWN_DOCUMENT);
+		
 		result.setQualifier(name);
 		result.addName(new Name(name, placeType, RU));
 

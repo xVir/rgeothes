@@ -19,7 +19,10 @@ public class Record {
 	public static final Record ROOT_RECORD = new Record();
 	{
 		qualifier = "Earth";
-	};
+	}
+	
+	private static final Object QUALIFIER_PARTS_SEPARATOR = ",";
+	
 	
 	private String qualifier;
 
@@ -68,6 +71,15 @@ public class Record {
 		return names.get(0);
 	}
 	
+	public void setPrimaryName(Name name){
+		if (names.size() == 0) {
+			names.add(0, name);			
+		}
+		else{
+			names.set(0, name);
+		}
+	}
+	
 	public Record getPrimaryParent(){
 		
 		if (this == ROOT_RECORD){
@@ -80,6 +92,17 @@ public class Record {
 		else{
 			throw new IllegalStateException("Only ROOT_RECORD could not have Parent");
 		}
+	}
+	
+	public void setPrimaryParent(Record rec, Document doc){
+		
+		if (belongTo.size() == 0) {
+			belongTo.add(0, new RecordReference(this, rec, doc));
+		}
+		else {
+			belongTo.set(0, new RecordReference(this, rec, doc));	
+		}
+		
 	}
 	
 	/*
@@ -96,7 +119,9 @@ public class Record {
 			return qualifier;
 		}
 
-		return String.format("%s; %s", getPrimaryParent().getFullQualifier(),qualifier);
+		return String.format("%s%s %s", 
+				getPrimaryParent().getFullQualifier(),
+				QUALIFIER_PARTS_SEPARATOR,qualifier);
 	}
 	
 	public String getQualifier() {

@@ -23,7 +23,7 @@ public class ThesaurusTest {
 	public void testInitialize() {
 		Thesaurus thesaurus = loadFromFile("input/novosib.txt");
 		assertNotNull(thesaurus);
-		assertEquals(867, thesaurus.getRecordsCount());
+		assertEquals(829, thesaurus.getRecordsCount());
 	}
 
 	private Thesaurus loadFromFile(String fileName) {
@@ -61,7 +61,9 @@ public class ThesaurusTest {
 		 */
 	
 		try {
-			result.addRecords(NskReestrParser.readRecordsFormFile(fileName));
+			NskReestrParser parser = new NskReestrParser();
+			
+			result.addRecords(parser.readRecordsFormFile(fileName));
 		} catch (DuplicateRecordException e) {
 			e.printStackTrace();
 		}
