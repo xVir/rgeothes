@@ -14,6 +14,8 @@ public class Name {
 	private String type;
 
 	private String language;
+	
+	private Document document;
 
 	public Name() {
 	}
@@ -47,6 +49,14 @@ public class Name {
 
 	public void setLanguage(String language) {
 		this.language = language;
+	}
+
+	public Document getDocument() {
+		return document;
+	}
+
+	public void setDocument(Document document) {
+		this.document = document;
 	}
 
 	@Override

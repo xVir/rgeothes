@@ -63,11 +63,11 @@ public class Thesaurus {
 
 	private void addRecord(Record rec) throws DuplicateRecordException {
 		
-		if (records.containsKey(rec.getFullQualifier())) {
+		if (records.containsKey(rec.getUniqueQualifier())) {
 			throw new DuplicateRecordException(rec);
 		}
 		
-		records.put(rec.getFullQualifier(), rec);
+		records.put(rec.getUniqueQualifier(), rec);
 		
 	}
 	

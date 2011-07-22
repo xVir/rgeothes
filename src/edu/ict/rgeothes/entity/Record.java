@@ -124,6 +124,13 @@ public class Record {
 				QUALIFIER_PARTS_SEPARATOR,qualifier);
 	}
 	
+	public String getUniqueQualifier(){
+		
+		return String.format("%s%s %s", getFullQualifier(),
+				QUALIFIER_PARTS_SEPARATOR,
+				getPrimaryName().getDocument().getLifetime());
+	}
+	
 	public String getQualifier() {
 		return qualifier;
 	}
@@ -144,7 +151,7 @@ public class Record {
 	public String toString() {
 		ToStringBuilder stringBuilder = new ToStringBuilder(this,
 				ApplicationContext.getInstance().getToStringStyle());
-		stringBuilder.append("qualifier",getFullQualifier());
+		stringBuilder.append("qualifier",getUniqueQualifier());
 		stringBuilder.append("names", names, true);
 		stringBuilder.append("locations",locations,true);
 		return stringBuilder.toString();
