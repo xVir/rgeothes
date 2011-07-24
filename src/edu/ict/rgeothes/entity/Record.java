@@ -128,7 +128,7 @@ public class Record {
 		
 		return String.format("%s%s %s", getFullQualifier(),
 				QUALIFIER_PARTS_SEPARATOR,
-				getPrimaryName().getDocument().getLifetime());
+				getPrimaryName().getLifetime());
 	}
 	
 	public String getQualifier() {

@@ -19,7 +19,7 @@ public class DuplicateRecordException extends Exception {
 	}
 	
 	public DuplicateRecordException(Record record){
-		detailMessage = String.format(MESSAGE_WITH_QUALIFIER_FORMAT, record.getQualifier());
+		detailMessage = String.format(MESSAGE_WITH_QUALIFIER_FORMAT, record.getUniqueQualifier());
 	}
 	
 	@Override

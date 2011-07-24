@@ -2,7 +2,11 @@ package edu.ict.rgeothes.tools;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -18,6 +22,8 @@ import edu.ict.rgeothes.entity.Point;
 import edu.ict.rgeothes.entity.Record;
 
 public class NskReestrParser {
+
+	private static final String RETIRED_NAME_DOCUMENT_DESCR = "Снят с учета ";
 
 	private static final String RU = "RU-ru";
 
@@ -79,8 +85,6 @@ public class NskReestrParser {
 								startIndex, endIndex),parentRecord);
 
 						System.out.println(record);
-	//					writer.append(record.toString());
-//						writer.append("\n");
 						
 						records.add(record);
 					} catch (Exception ex) {
@@ -178,32 +182,112 @@ public class NskReestrParser {
 
 		// ---------------------------------------------------------------------------------------
 
-		StrTokenizer secondLine = new StrTokenizer(lines.get(1), TAB);
-
-		String firstToken = secondLine.nextToken();
-
 		List<String> anotherNames = new ArrayList<String>();
 		StringBuilder documentDescription = new StringBuilder();
 
-		if (!StringUtils.isBlank(firstToken)) {
+		fillNamesAndDocDescription(1, lines, documentDescription, anotherNames);
 
-			if (firstToken.contains("Снят с")) {
-				documentDescription.append(firstToken);
+		Record districtRecord = getDistrictRecord(parentRecord, district);
+		
+		result.setPrimaryParent(districtRecord, Document.UNKNOWN_DOCUMENT);
+		
+		result.setQualifier(name);
+		
+		Name resultName = new Name(name, placeType, RU);
+		
+		if (documentDescription.toString().contains(RETIRED_NAME_DOCUMENT_DESCR)) {
 
-				documentDescription.append(" ");
-				documentDescription.append(getFirstTokenFromLine(lines.get(2)));
-
-				documentDescription.append(" ");
-				documentDescription.append(getFirstTokenFromLine(lines.get(3)));
-
-			} else if (firstToken.contains("Изменился род")) {
-
-			} else {
-				// firstToken is additional name
-				anotherNames.add(firstToken);
+			String docDescr = documentDescription.toString();
+			
+			String documentDateString =StringUtils.substringBetween(docDescr, RETIRED_NAME_DOCUMENT_DESCR, " ");
+			
+			Date documentDate = null;
+			try {
+				documentDate = new SimpleDateFormat("dd/MM/yyyy").parse(documentDateString);
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
+			
+			String shortDocumentDescription = StringUtils.substringAfter(docDescr, documentDateString).trim();
+			
+			resultName.setEndDocument(new Document(shortDocumentDescription,
+					documentDate));	
+		}
+		
+		result.setPrimaryName(resultName);
+
+		result.addLocation(new Point(latitudeValue, longitudeValue));
+		
+		for (String anotherName : anotherNames) {
+			result.addName(new Name(anotherName, placeType, RU));
 		}
 
+		return result;
+
+	}
+	
+	private void fillNamesAndDocDescription(int lineNumber,List<String> lines,
+			StringBuilder outDocDescription,List<String> outAnotherNames){
+		
+		if (lines.size() > lineNumber) {
+			String firstToken = getFirstTokenFromLine(lines.get(lineNumber));
+			
+			if (StringUtils.isNotBlank(firstToken)) {
+
+				if (firstToken.contains("Снят с")) {
+
+					String secondToken = getSecondTokenFromLine(lines.get(lineNumber));
+					if (StringUtils.isNotBlank(secondToken)) {
+						outAnotherNames.add(secondToken);
+					}
+					
+					outDocDescription.append(firstToken);
+					
+					if (lines.size() > lineNumber+1) {
+						outDocDescription.append(" ");
+						outDocDescription.append(getFirstTokenFromLine(lines.get(lineNumber+1)));
+						
+						secondToken = getSecondTokenFromLine(lines.get(lineNumber+1));
+						if (StringUtils.isNotBlank(secondToken)) {
+							outAnotherNames.add(secondToken);
+						}
+						
+						if (lines.size() > lineNumber + 2) {
+							outDocDescription.append(" ");
+							outDocDescription.append(getFirstTokenFromLine(lines.get(lineNumber+2)));
+							
+							secondToken = getSecondTokenFromLine(lines.get(lineNumber+2));
+							if (StringUtils.isNotBlank(secondToken)) {
+								outAnotherNames.add(secondToken);
+							}
+						}
+					}
+					
+					fillNamesAndDocDescription(lineNumber+1, lines, outDocDescription, outAnotherNames);
+
+				} else if (firstToken.contains("Изменился род")) {
+					
+					String secondToken = getSecondTokenFromLine(lines.get(lineNumber));
+					if (StringUtils.isNotBlank(secondToken)) {
+						outAnotherNames.add(secondToken);
+					}
+					
+					fillNamesAndDocDescription(lineNumber+1, lines, outDocDescription, outAnotherNames);
+					
+				} else {
+					// firstToken is additional name
+					outAnotherNames.add(firstToken);
+					
+					fillNamesAndDocDescription(lineNumber+1, lines, outDocDescription, outAnotherNames);
+				}
+			}
+		}
+		
+				
+		
+	}
+
+	private Record getDistrictRecord(Record parentRecord, String district) {
 		Record districtRecord = new Record();
 		districtRecord.setPrimaryParent(parentRecord, Document.UNKNOWN_DOCUMENT);
 		districtRecord.setQualifier(district);
@@ -215,20 +299,7 @@ public class NskReestrParser {
 		else{
 			districtRecord = districts.get(districtRecord.getFullQualifier());
 		}
-		
-		result.setPrimaryParent(districtRecord, Document.UNKNOWN_DOCUMENT);
-		
-		result.setQualifier(name);
-		result.addName(new Name(name, placeType, RU));
-
-		result.addLocation(new Point(latitudeValue, longitudeValue));
-		
-		for (String anotherName : anotherNames) {
-			result.addName(new Name(anotherName, placeType, RU));
-		}
-
-		return result;
-
+		return districtRecord;
 	}
 
 	private static double longitudeFromString(String longitudeString) {
@@ -258,6 +329,17 @@ public class NskReestrParser {
 	private static String getFirstTokenFromLine(String input) {
 		StrTokenizer tokenizer = new StrTokenizer(input, TAB);
 		return tokenizer.nextToken();
+	}
+	
+	private static String getSecondTokenFromLine(String input) {
+		StrTokenizer tokenizer = new StrTokenizer(input, TAB);
+		tokenizer.nextToken();
+		if(tokenizer.hasNext()){
+			return tokenizer.nextToken();
+		}
+		else{
+			return "";
+		}
 	}
 
 }

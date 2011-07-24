@@ -1,5 +1,9 @@
 package edu.ict.rgeothes.entity;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -10,12 +14,23 @@ import edu.ict.rgeothes.ApplicationContext;
  */
 public class Name {
 
+	private static final DateFormat lifetimeFormat = new SimpleDateFormat("yyyy.MM.dd");
+	
 	private String name;
 	private String type;
 
 	private String language;
+
+	/**
+	 * Document, what makes name legal
+	 */
+	private Document beginDocument;
 	
-	private Document document;
+	/**
+	 * Document, what cancel name
+	 */
+	private Document endDocument; 
+	
 
 	public Name() {
 	}
@@ -25,6 +40,9 @@ public class Name {
 		this.name = name;
 		this.type = type;
 		this.language = language;
+		
+		this.beginDocument = Document.UNKNOWN_DOCUMENT;
+		this.endDocument = Document.UNKNOWN_DOCUMENT;
 	}
 
 	public String getName() {
@@ -51,12 +69,22 @@ public class Name {
 		this.language = language;
 	}
 
-	public Document getDocument() {
-		return document;
+	
+	
+	public Document getBeginDocument() {
+		return beginDocument;
 	}
 
-	public void setDocument(Document document) {
-		this.document = document;
+	public void setBeginDocument(Document beginDocument) {
+		this.beginDocument = beginDocument;
+	}
+
+	public Document getEndDocument() {
+		return endDocument;
+	}
+
+	public void setEndDocument(Document endDocument) {
+		this.endDocument = endDocument;
 	}
 
 	@Override
@@ -78,4 +106,47 @@ public class Name {
 		return hashCodeBuilder.toHashCode();
 	}
 
+	
+
+	/**
+	 * Returns true, if document is valid on specified date,
+	 * otherwise false
+	 * @param date
+	 * @return
+	 */
+	public boolean isValidOnDate(Date date){
+		if (date.after(beginDocument.getDate()) 
+				&& date.before(endDocument.getDate())) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public String getLifetime(){
+		StringBuilder builder = new StringBuilder();
+		
+		if (beginDocument != null && beginDocument != Document.UNKNOWN_DOCUMENT) {
+			builder.append(lifetimeFormat.format(beginDocument.getDate()));
+		}
+		else {
+			builder.append("unknown");
+		}
+		
+		builder.append("-");
+		
+		if (endDocument != null && endDocument != Document.UNKNOWN_DOCUMENT) {
+			builder.append(lifetimeFormat.format(endDocument.getDate()));
+		}
+		else{
+			builder.append("unknown");	
+		}
+		
+		return builder.toString();
+	}
+	
 }

@@ -19,19 +19,7 @@ public class Document {
 	public static final Document UNKNOWN_DOCUMENT = new Document(
 			"unknown document");
 
-	/**
-	 * Date, representing unknown date in future
-	 */
-	public static final Date UNKNOWN_HIGH_DATE = new GregorianCalendar(9999,
-			11, 31).getTime();
 
-	/**
-	 * Date, representing unknown date in past
-	 */
-	public static final Date UNKNOWN_LOW_DATE = new GregorianCalendar(0, 0, 1)
-			.getTime();
-
-	private static final DateFormat lifetimeFormat = new SimpleDateFormat("yyyy.MM.dd");
 
 	public Document() {
 
@@ -40,12 +28,16 @@ public class Document {
 	private Document(String description) {
 		this.description = description;
 	}
+	
+	public Document(String description,Date date) {
+		this.description = description;
+		this.date = date;
+	}
 
 	private String uri;
 	private String description;
 
-	private Date beginDate;
-	private Date endDate;
+	private Date date;
 
 	public String getUri() {
 		return uri;
@@ -63,20 +55,12 @@ public class Document {
 		this.description = description;
 	}
 
-	public Date getBeginDate() {
-		return beginDate;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setBeginDate(Date beginDate) {
-		this.beginDate = beginDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public void setDate(Date beginDate) {
+		this.date = beginDate;
 	}
 
 	public Date getCreationDate() {
@@ -96,8 +80,7 @@ public class Document {
 		hashCodeBuilder.append(uri);
 		// hashCodeBuilder.append(description);
 		hashCodeBuilder.append(creationDate);
-		hashCodeBuilder.append(beginDate);
-		hashCodeBuilder.append(endDate);
+		hashCodeBuilder.append(date);
 
 		return hashCodeBuilder.toHashCode();
 	}
@@ -113,28 +96,7 @@ public class Document {
 		return builder.toString();
 	}
 	
-	/**
-	 * Returns interval where document has power
-	 */
-	public String getLifetime(){
-		return String.format("%s-%s", lifetimeFormat.format(beginDate),
-				lifetimeFormat.format(endDate));
-	}
 	
-	
-	/**
-	 * Returns true, if document is valid on specified date,
-	 * otherwise false
-	 * @param date
-	 * @return
-	 */
-	public boolean isValidOnDate(Date date){
-		if (date.after(beginDate) && date.before(endDate)) {
-			return true;
-		}
-		
-		return false;
-	}
 
 	
 }

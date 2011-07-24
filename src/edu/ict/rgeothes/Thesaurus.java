@@ -54,9 +54,14 @@ public class Thesaurus {
 		
 	}
 
-	public void addRecords(List<Record> recordsToAdd) throws DuplicateRecordException {
+	public void addRecords(List<Record> recordsToAdd) {
+		
 		for(Record rec : recordsToAdd){
-			addRecord(rec);
+			try {
+				addRecord(rec);
+			} catch (DuplicateRecordException e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
