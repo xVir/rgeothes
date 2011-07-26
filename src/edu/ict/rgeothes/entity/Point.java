@@ -34,6 +34,12 @@ public class Point extends Location {
 		this.longitude = longitude;
 	}
 	
+	public Point(double latitude, double longitude, Document beginDocument) {
+		super(beginDocument);
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
+	
 	@Override
 	public String toString() {
 		ToStringBuilder stringBuilder = new ToStringBuilder(this,

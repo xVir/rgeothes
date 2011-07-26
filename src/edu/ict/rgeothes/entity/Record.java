@@ -62,6 +62,10 @@ public class Record {
 		locations.add(location);
 	}
 	
+	public List<Location> getLocations() {
+		return locations;
+	}
+	
 	
 	public Name getPrimaryName(){
 		return names.get(0);

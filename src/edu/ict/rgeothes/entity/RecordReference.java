@@ -20,7 +20,7 @@ public class RecordReference {
 	/**
 	 * Record from which link begins 
 	 */
-	private Record recordFrom;
+	private transient Record recordFrom;
 	
 	/**
 	 * Record where link ends

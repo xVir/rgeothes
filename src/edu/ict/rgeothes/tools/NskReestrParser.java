@@ -17,6 +17,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrTokenizer;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import edu.ict.rgeothes.entity.Document;
 import edu.ict.rgeothes.entity.Name;
 import edu.ict.rgeothes.entity.Point;
@@ -43,7 +46,16 @@ public class NskReestrParser {
 		
 		NskReestrParser parser = new NskReestrParser();
 		
-		parser.readRecordsFormFile(inputFilePath);
+		List<Record> records = parser.readRecordsFormFile(inputFilePath);
+		
+		Gson gson = new GsonBuilder()
+		.setPrettyPrinting().create();
+		
+		
+			System.out.println(gson.toJson(records.get(2)));
+			System.out.println();
+			System.out.println(gson.toJson(records.get(2).getLocations().get(0)));
+			
 
 	}
 

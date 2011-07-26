@@ -5,14 +5,36 @@ package edu.ict.rgeothes.entity;
  */
 public abstract class Location {
 
-	private Document document;
+	private Document beginDocument;
 	
-	public Document getDocument() {
-		return document;
+	private Document endDocument;
+
+	
+	
+	public Document getBeginDocument() {
+		return beginDocument;
+	}
+
+	public void setBeginDocument(Document beginDocument) {
+		this.beginDocument = beginDocument;
+	}
+
+	public Document getEndDocument() {
+		return endDocument;
+	}
+
+	public void setEndDocument(Document endDocument) {
+		this.endDocument = endDocument;
+	}
+
+	public Location(Document beginDocument) {
+		super();
+		this.beginDocument = beginDocument;
 	}
 	
-	public void setDocument(Document document) {
-		this.document = document;
+	public Location() {
 	}
+	
+	
 	
 }
