@@ -39,6 +39,11 @@ public class Document {
 
 	private Date date;
 
+	/**
+	 * Creation date of document
+	 */
+	private Date creationDate;
+	
 	public String getUri() {
 		return uri;
 	}
@@ -71,7 +76,7 @@ public class Document {
 		this.creationDate = creationDate;
 	}
 
-	private Date creationDate;
+	
 
 	@Override
 	public int hashCode() {
