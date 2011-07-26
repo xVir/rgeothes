@@ -3,6 +3,7 @@ package edu.ict.rgeothes;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import edu.ict.rgeothes.entity.Document;
 import edu.ict.rgeothes.entity.Record;
@@ -11,7 +12,7 @@ import edu.ict.rgeothes.exceptions.RecordNotFoundException;
 
 public class Thesaurus {
 	
-	private Map<String,Record> records = new HashMap<String, Record>(); 
+	private Map<UUID,Record> records = new HashMap<UUID, Record>(); 
 	
 	public Thesaurus() {
 		// TODO Auto-generated constructor stub
@@ -68,11 +69,11 @@ public class Thesaurus {
 
 	private void addRecord(Record rec) throws DuplicateRecordException {
 		
-		if (records.containsKey(rec.getUniqueQualifier())) {
+		if (records.containsKey(rec.getQualifier())) {
 			throw new DuplicateRecordException(rec);
 		}
 		
-		records.put(rec.getUniqueQualifier(), rec);
+		records.put(rec.getQualifier(), rec);
 		
 	}
 	

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -31,7 +32,7 @@ public class NskReestrParser {
 
 	private static String[] documentBeginings = { "Снят с", "Изменился род", };
 	
-	private Map<String, Record> districts = new HashMap<String, Record>();
+	private Map<UUID, Record> districts = new HashMap<UUID, Record>();
 
 	/**
 	 * @param args
@@ -54,12 +55,10 @@ public class NskReestrParser {
 			Record russiaRecord = new Record();
 			russiaRecord.setPrimaryParent(Record.ROOT_RECORD, Document.UNKNOWN_DOCUMENT);
 			russiaRecord.setPrimaryName(new Name("Российская Федерация", "государство", RU));
-			russiaRecord.setQualifier("Российская Федерация");
 			
 			Record parentRecord = new Record();
 			parentRecord.setPrimaryParent(russiaRecord, Document.UNKNOWN_DOCUMENT);
 			parentRecord.setPrimaryName(new Name("Новосибирская область", "область", RU));
-			parentRecord.setQualifier("Новосибирская область");
 			
 			List<String> fileContent = FileUtils.readLines(new File(
 					inputFilePath));
@@ -191,8 +190,6 @@ public class NskReestrParser {
 		
 		result.setPrimaryParent(districtRecord, Document.UNKNOWN_DOCUMENT);
 		
-		result.setQualifier(name);
-		
 		Name resultName = new Name(name, placeType, RU);
 		
 		if (documentDescription.toString().contains(RETIRED_NAME_DOCUMENT_DESCR)) {
@@ -260,10 +257,11 @@ public class NskReestrParser {
 							if (StringUtils.isNotBlank(secondToken)) {
 								outAnotherNames.add(secondToken);
 							}
+							
+							fillNamesAndDocDescription(lineNumber+3, lines, outDocDescription, outAnotherNames);
 						}
+						
 					}
-					
-					fillNamesAndDocDescription(lineNumber+1, lines, outDocDescription, outAnotherNames);
 
 				} else if (firstToken.contains("Изменился род")) {
 					
@@ -290,14 +288,13 @@ public class NskReestrParser {
 	private Record getDistrictRecord(Record parentRecord, String district) {
 		Record districtRecord = new Record();
 		districtRecord.setPrimaryParent(parentRecord, Document.UNKNOWN_DOCUMENT);
-		districtRecord.setQualifier(district);
 		districtRecord.setPrimaryName(new Name(district, "район", RU));
 		
-		if (!districts.containsKey(districtRecord.getFullQualifier())) {
-			districts.put(districtRecord.getFullQualifier(), districtRecord);
+		if (!districts.containsKey(districtRecord.getQualifier())) {
+			districts.put(districtRecord.getQualifier(), districtRecord);
 		}
 		else{
-			districtRecord = districts.get(districtRecord.getFullQualifier());
+			districtRecord = districts.get(districtRecord.getQualifier());
 		}
 		return districtRecord;
 	}

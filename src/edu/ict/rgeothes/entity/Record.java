@@ -2,6 +2,7 @@ package edu.ict.rgeothes.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -17,14 +18,8 @@ public class Record {
 	 * Record, which is the root of thesaurus (let's assume its "Earth")
 	 */
 	public static final Record ROOT_RECORD = new Record();
-	{
-		qualifier = "Earth";
-	}
 	
-	private static final Object QUALIFIER_PARTS_SEPARATOR = ",";
-	
-	
-	private String qualifier;
+	private UUID qualifier;
 
 	private RecordReference previous;
 	
@@ -43,6 +38,7 @@ public class Record {
 	private List<RecordReference> belongTo = new ArrayList<RecordReference>();
 
 	public Record() {
+		qualifier = UUID.randomUUID();
 	}
 	
 	public void addName(Name name){
@@ -105,37 +101,11 @@ public class Record {
 		
 	}
 	
-	/*
-	 * Unique qualifier for record
-	 */
-	public String getFullQualifier() {
-		
-		if (getPrimaryParent() == null) {
-			return qualifier;
-		}
-		
-		if (getPrimaryParent() == ROOT_RECORD) {
-			//we can ignore root record qualifier
-			return qualifier;
-		}
-
-		return String.format("%s%s %s", 
-				getPrimaryParent().getFullQualifier(),
-				QUALIFIER_PARTS_SEPARATOR,qualifier);
-	}
-	
-	public String getUniqueQualifier(){
-		
-		return String.format("%s%s %s", getFullQualifier(),
-				QUALIFIER_PARTS_SEPARATOR,
-				getPrimaryName().getLifetime());
-	}
-	
-	public String getQualifier() {
+	public UUID getQualifier() {
 		return qualifier;
 	}
 	
-	public void setQualifier(String qualifier) {
+	public void setQualifier(UUID qualifier) {
 		this.qualifier = qualifier;
 	}
 	
@@ -151,7 +121,10 @@ public class Record {
 	public String toString() {
 		ToStringBuilder stringBuilder = new ToStringBuilder(this,
 				ApplicationContext.getInstance().getToStringStyle());
-		stringBuilder.append("qualifier",getUniqueQualifier());
+		stringBuilder.append("qualifier",getQualifier());
+		stringBuilder.append("primaryName",getPrimaryName());
+		stringBuilder.append("lifeteime",getPrimaryName().getLifetime());
+		stringBuilder.append("endDoc",getPrimaryName().getEndDocument());
 		stringBuilder.append("names", names, true);
 		stringBuilder.append("locations",locations,true);
 		return stringBuilder.toString();
@@ -161,7 +134,7 @@ public class Record {
 	public int hashCode() {
 		HashCodeBuilder hashCodeBuilder = new HashCodeBuilder();
 		
-		hashCodeBuilder.append(getFullQualifier());
+		hashCodeBuilder.append(getQualifier());
 		
 		return hashCodeBuilder.toHashCode();
 	}
