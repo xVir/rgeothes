@@ -1,0 +1,69 @@
+{
+  "qualifier": "2af7f4ea-5c95-4332-8994-e2096cc8166b",
+  "names": [
+    {
+      "name": "Акпановка",
+      "type": "аул",
+      "language": "RU-ru",
+      "beginDocument": {
+        "description": "unknown document"
+      },
+      "endDocument": {
+        "description": "Решение Новосибирского облсовета № 604 от  24/10/1971.",
+        "date": "Oct 24, 1971 "
+      }
+    },
+    {
+      "name": "Карасук-Казах",
+      "type": "аул",
+      "language": "RU-ru",
+      "beginDocument": {
+        "description": "unknown document"
+      },
+      "endDocument": {
+        "description": "Решение Новосибирского облсовета № 604 от  24/10/1971.",
+        "date": "Oct 24, 1971 "
+      }
+    },
+    {
+      "name": "Карасук-Казах (Акпановский)",
+      "type": "аул",
+      "language": "RU-ru",
+      "beginDocument": {
+        "description": "unknown document"
+      },
+      "endDocument": {
+        "description": "Решение Новосибирского облсовета № 604 от  24/10/1971.",
+        "date": "Oct 24, 1971 "
+      }
+    },
+  ],
+  "locations": [
+    {
+        "type":"point",
+        "latitude": 53.56666666666667,
+        "longitude": 77.75,
+
+        "beginDocument":{
+          "description":"Document description",
+          "date": "document date"
+        },
+        "endDocument":{
+          "description":"Document description",
+          "date": "document date"
+        }
+    }
+    
+  ],
+  "contains": [],
+  "belongTo": [
+    {
+        "recordTo": {
+          "qualifier": "404546b0-157f-4343-a44f-3edba65b9bd4",         
+          "document": {
+            "description": "unknown document"
+          }
+      }
+    }
+  ]
+}

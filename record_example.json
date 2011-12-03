@@ -1,0 +1,73 @@
+
+
+{
+  "qualifier": "c4d02870-302f-4602-9aa7-6a37521c1f08",
+  "names": [
+    {
+      "name": "Агафониха",
+      "type": "деревня",
+      "language": "RU-ru",
+      "beginDocument": {
+        "description": "unknown document"
+      },
+      "endDocument": {
+        "description": "Решение Новосибирского областного Совета депутатов  №4503 от 20/09/2002.",
+        "date": "Sep 20, 2002 12:00:00 AM"
+      }
+    },
+    {
+      "name": "Агафониха",
+      "type": "деревня",
+      "language": "RU-ru",
+      "beginDocument": {
+        "description": "unknown document"
+      },
+      "endDocument": {
+        "description": "Решение Новосибирского областного Совета депутатов  №4503 от 20/09/2002.",
+        "date": "Sep 20, 2002 12:00:00 AM"
+      }
+    }
+  ],
+  "locations": [
+    {
+        "type":"point",
+        "latitude": 54.93333333333333,
+        "longitude": 84.13333333333334,
+
+        "beginDocument":{
+          "description":"Document description",
+          "date": "document date"
+        },
+        "endDocument":{
+          "description":"Document description",
+          "date": "document date"
+        }
+    }
+    
+  ],
+  "contains": [],
+  "belongTo": [
+    {
+        "recordTo": {
+          "qualifier": "404546b0-157f-4343-a44f-3edba65b9bd4",
+          "names": [
+            {
+              "name": "Тогучинский район",
+              "type": "район",
+              "language": "RU-ru",
+              "beginDocument": {
+                "description": "unknown document"
+              },
+              "endDocument": {
+                "description": "unknown document"
+              }
+            }
+          ],
+          
+        "document": {
+          "description": "unknown document"
+        }
+      }
+    }
+  ]
+}
