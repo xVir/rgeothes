@@ -28,6 +28,9 @@ public class Point extends Location {
 		this.longitude = longitude;
 	}
 
+	public Point() {
+	}
+	
 	public Point(double latitude, double longitude) {
 		super();
 		this.latitude = latitude;

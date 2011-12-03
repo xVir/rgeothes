@@ -41,6 +41,34 @@ public class Record {
 		qualifier = UUID.randomUUID();
 	}
 	
+	public List<Name> getNames() {
+		return names;
+	}
+
+	public void setNames(List<Name> names) {
+		this.names = names;
+	}
+
+	public List<RecordReference> getContains() {
+		return contains;
+	}
+
+	public void setContains(List<RecordReference> contains) {
+		this.contains = contains;
+	}
+
+	public List<RecordReference> getBelongTo() {
+		return belongTo;
+	}
+
+	public void setBelongTo(List<RecordReference> belongTo) {
+		this.belongTo = belongTo;
+	}
+
+	public void setLocations(List<Location> locations) {
+		this.locations = locations;
+	}
+
 	public void addName(Name name){
 		names.add(name);
 	}

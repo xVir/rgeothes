@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="lib/guava-r09/guava-r09.jar" sourcepath="lib/guava-r09/guava-src-r09.zip"/>
 	<classpathentry kind="lib" path="lib/pdfbox/fontbox-1.5.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons/commons-lang-2.6/commons-lang-2.6.jar" sourcepath="lib/commons/commons-lang-2.6/commons-lang-2.6-sources.jar">
@@ -32,5 +32,11 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/RGeoThes/lib/commons/commons-logging-1.1.1/commons-logging-1.1.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/jaxb/activation.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb/jaxb-api.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb/jaxb-impl.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb/jaxb-xjc.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb/jaxb1-impl.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb/jsr173_1.0_api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
