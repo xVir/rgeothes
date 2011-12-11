@@ -1,8 +1,14 @@
 package edu.ict.rgeothes.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * Class, used to link records
  */
+@Entity
+@Table(name="record_reference")
 public class RecordReference {
 
 	public RecordReference() {
@@ -16,7 +22,17 @@ public class RecordReference {
 		this.document = document;
 	}
 
-
+	@Id
+	private long id;
+	
+	public long getId() {
+		return id;
+	}
+	
+	public void setId(long id) {
+		this.id = id;
+	}
+	
 	/**
 	 * Record from which link begins 
 	 */

@@ -1,5 +1,10 @@
 package edu.ict.rgeothes.entity;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("rectangle")
 public class Rectangle extends Location {
 
 	private Point point1;

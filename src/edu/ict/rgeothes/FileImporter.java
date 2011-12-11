@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -17,6 +20,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 
+import edu.ict.rgeothes.dao.RecordDao;
 import edu.ict.rgeothes.entity.Document;
 import edu.ict.rgeothes.entity.Name;
 import edu.ict.rgeothes.entity.Point;
@@ -32,8 +36,9 @@ public class FileImporter {
 	/**
 	 * @param args
 	 * @throws IOException
+	 * @throws SQLException 
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, SQLException {
 
 		if (args.length < 1) {
 			System.out.println("Specify input file");
@@ -102,7 +107,16 @@ public class FileImporter {
 			
 		}
 		
+		//trying to save 
 		
+
+		Connection connection = DriverManager.getConnection(
+				"jdbc:postgresql://127.0.0.1:5432/geothes1", "postgres",
+				"postgres");
+
+		connection.setAutoCommit(true);
+		
+		new RecordDao(connection).addRecords(result);
 
 	}
 

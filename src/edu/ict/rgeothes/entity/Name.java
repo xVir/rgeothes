@@ -4,6 +4,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -12,9 +17,22 @@ import edu.ict.rgeothes.ApplicationContext;
 /*
  * Class, representing name of the record
  */
+@Entity
+@Table(name="thesaurus_name")
 public class Name {
 
 	private static final DateFormat lifetimeFormat = new SimpleDateFormat("yyyy.MM.dd");
+	
+	@Id
+	private long id;
+	
+	public long getId() {
+		return id;
+	}
+	
+	public void setId(long id) {
+		this.id = id;
+	}
 	
 	private String name;
 	private String type;
@@ -127,6 +145,7 @@ public class Name {
 	 * 
 	 * @return
 	 */
+	@Transient
 	public String getLifetime(){
 		StringBuilder builder = new StringBuilder();
 		

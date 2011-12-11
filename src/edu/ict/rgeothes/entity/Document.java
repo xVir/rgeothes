@@ -5,6 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -14,12 +20,12 @@ import edu.ict.rgeothes.ApplicationContext;
 /**
  * Class representing document item
  */
+@Entity
+@Table(name="thesaurus_document")
 public class Document {
 
 	public static final Document UNKNOWN_DOCUMENT = new Document(
 			"unknown document");
-
-
 
 	public Document() {
 
@@ -34,14 +40,28 @@ public class Document {
 		this.date = date;
 	}
 
+	@Id
+	private long id;
+	
+	
+	public long getId() {
+		return id;
+	}
+	
+	public void setId(long id) {
+		this.id = id;
+	}
+	
 	private String uri;
 	private String description;
 
+	@Temporal(TemporalType.DATE)
 	private Date date;
 
 	/**
 	 * Creation date of document
 	 */
+	@Temporal(TemporalType.DATE)
 	private Date creationDate;
 	
 	public String getUri() {

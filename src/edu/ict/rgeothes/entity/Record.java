@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -12,6 +18,8 @@ import edu.ict.rgeothes.ApplicationContext;
 /**
  * Main class, representing record of thesaurus
  */
+@Entity
+@Table(name="thesaurus_record")
 public class Record {
 
 	/**
@@ -19,27 +27,35 @@ public class Record {
 	 */
 	public static final Record ROOT_RECORD = new Record();
 	
+	@Id
 	private UUID qualifier;
 
+	@Transient
 	private RecordReference previous;
 	
+	@OneToMany
 	private List<Name> names = new ArrayList<Name>();
 
+	@OneToMany
 	private List<Location> locations = new ArrayList<Location>();
 	
 	/**
 	 * Objects, with current object contains
 	 */
+	@Transient
 	private List<RecordReference> contains = new ArrayList<RecordReference>();
 	
 	/**
 	 * Objects, which contains current object
 	 */
+	@Transient
 	private List<RecordReference> belongTo = new ArrayList<RecordReference>();
 
 	public Record() {
 		qualifier = UUID.randomUUID();
 	}
+	
+	
 	
 	public List<Name> getNames() {
 		return names;

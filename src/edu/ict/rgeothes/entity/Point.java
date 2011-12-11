@@ -1,9 +1,14 @@
 package edu.ict.rgeothes.entity;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import edu.ict.rgeothes.ApplicationContext;
 
+@Entity
+@DiscriminatorValue("point")
 public class Point extends Location {
 
 	private double latitude;
