@@ -23,7 +23,7 @@ public class ThesaurusTest {
 	public void testInitialize() {
 		Thesaurus thesaurus = loadFromFile("input/novosib.txt");
 		assertNotNull(thesaurus);
-		assertEquals(829, thesaurus.getRecordsCount());
+		assertEquals(843, thesaurus.getRecordsCount());
 	}
 
 	private Thesaurus loadFromFile(String fileName) {
