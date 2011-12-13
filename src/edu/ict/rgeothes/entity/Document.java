@@ -27,6 +27,12 @@ public class Document {
 	public static final Document UNKNOWN_DOCUMENT = new Document(
 			"unknown document");
 
+	static{
+		UNKNOWN_DOCUMENT.setId(0);
+		UNKNOWN_DOCUMENT.setDate(new GregorianCalendar(294276, 1, 1).getTime());
+		UNKNOWN_DOCUMENT.setCreationDate(new GregorianCalendar(294276, 1, 1).getTime());
+	}
+	
 	public Document() {
 
 	}

@@ -56,6 +56,9 @@ public abstract class Location {
 	}
 	
 	public Location() {
+		beginDocument = Document.UNKNOWN_DOCUMENT;
+		endDocument = Document.UNKNOWN_DOCUMENT;
+		
 	}
 	
 	

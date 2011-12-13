@@ -111,7 +111,7 @@ public class FileImporter {
 		
 
 		Connection connection = DriverManager.getConnection(
-				"jdbc:postgresql://127.0.0.1:5432/geothes1", "postgres",
+				"jdbc:postgresql://127.0.0.1:5432/rgeothes", "postgres",
 				"postgres");
 
 		connection.setAutoCommit(true);
