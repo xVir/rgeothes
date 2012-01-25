@@ -25,7 +25,7 @@ public class Name implements Serializable{
 	private static final DateFormat lifetimeFormat = new SimpleDateFormat("yyyy.MM.dd");
 	
 	@Id
-	private long id;
+	private transient long id;
 	
 	public long getId() {
 		return id;

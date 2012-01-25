@@ -20,7 +20,7 @@ import javax.persistence.InheritanceType;
 public abstract class Location implements Serializable {
 
 	@Id
-	private long id;
+	private transient long id;
 	
 	public long getId() {
 		return id;

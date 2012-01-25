@@ -9,7 +9,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -91,6 +93,8 @@ public class KazImporter {
 			xstream.alias("point", Point.class);
 			xstream.alias("rectangle", Rectangle.class);
 			
+			xstream.setMode(XStream.NO_REFERENCES);
+			
 			String serialized = xstream.toXML(result);
 			
 			File outputFile = new File("kz.xml");
@@ -102,6 +106,8 @@ public class KazImporter {
 	}
 
 	private static List<Record> parseRecords(List<String> inputLines) {
+		Map<String, Record> recordsMap = new HashMap<>();
+		
 		List<Record> result = new ArrayList<Record>(); 
 		for (int i = 1; i < inputLines.size(); i++) {
 			String inputString = inputLines.get(i);
@@ -126,6 +132,24 @@ public class KazImporter {
 			anotherName.setBeginDocument(beginDoc);
 			record.addName(anotherName);
 			
+			String previousRecordName = stringItems[5];
+			
+			if (StringUtils.isNotBlank(previousRecordName) && recordsMap.containsKey(previousRecordName)) {
+				RecordReference previousReference = new RecordReference();
+				previousReference.setRecordFrom(recordsMap.get(previousRecordName));
+				previousReference.setRecordTo(record);
+				
+				Document changeNameDocument = new Document(
+						String.format( "Изменение названия с %s на %s",
+								previousReference.getRecordFrom().getPrimaryName().getName(),
+								previousReference.getRecordTo().getPrimaryName().getName()),
+						date);
+				
+				previousReference.setDocument(changeNameDocument);
+				
+				record.setPrevious(previousReference);
+			}
+			
 			//object location
 			Point p = createPoint(stringItems[8]);
 			
@@ -134,6 +158,8 @@ public class KazImporter {
 			record.addLocation(p);
 			
 			result.add(record);
+			
+			recordsMap.put(primaryName.getName(), record);
 			
 		}
 		return result;

@@ -3,8 +3,10 @@ package edu.ict.rgeothes.entity;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,18 +24,31 @@ import edu.ict.rgeothes.ApplicationContext;
  * Class representing document item
  */
 @Entity
-@Table(name="thesaurus_document")
-public class Document implements Serializable{
+@Table(name = "thesaurus_document")
+public class Document implements Serializable {
 
 	public static final Document UNKNOWN_DOCUMENT = new Document(
 			"unknown document");
 
-	static{
+	static {
 		UNKNOWN_DOCUMENT.setId(0);
-		UNKNOWN_DOCUMENT.setDate(new GregorianCalendar(294276, 1, 1).getTime());
-		UNKNOWN_DOCUMENT.setCreationDate(new GregorianCalendar(294276, 1, 1).getTime());
+
+		GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
+		calendar.setGregorianChange(new GregorianCalendar(1918,
+				Calendar.FEBRUARY, 14).getTime());
+
+		calendar.set(Calendar.YEAR, 3000);
+		calendar.set(Calendar.MONTH, Calendar.JANUARY);
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+
+		UNKNOWN_DOCUMENT.setDate(calendar.getTime());
+		UNKNOWN_DOCUMENT.setCreationDate(calendar.getTime());
 	}
-	
+
 	public Document() {
 
 	}
@@ -41,24 +56,23 @@ public class Document implements Serializable{
 	private Document(String description) {
 		this.description = description;
 	}
-	
-	public Document(String description,Date date) {
+
+	public Document(String description, Date date) {
 		this.description = description;
 		this.date = date;
 	}
 
 	@Id
-	private long id;
-	
-	
+	private transient long id;
+
 	public long getId() {
 		return id;
 	}
-	
+
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	private String uri;
 	private String description;
 
@@ -70,7 +84,7 @@ public class Document implements Serializable{
 	 */
 	@Temporal(TemporalType.DATE)
 	private Date creationDate;
-	
+
 	public String getUri() {
 		return uri;
 	}
@@ -103,8 +117,6 @@ public class Document implements Serializable{
 		this.creationDate = creationDate;
 	}
 
-	
-
 	@Override
 	public int hashCode() {
 		HashCodeBuilder hashCodeBuilder = new HashCodeBuilder();
@@ -127,8 +139,5 @@ public class Document implements Serializable{
 
 		return builder.toString();
 	}
-	
-	
 
-	
 }

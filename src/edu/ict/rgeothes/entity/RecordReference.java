@@ -1,6 +1,7 @@
 package edu.ict.rgeothes.entity;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,13 +20,15 @@ public class RecordReference implements Serializable {
 	
 	public RecordReference(Record recordFrom, Record recordTo, Document document) {
 		super();
-		this.recordFrom = recordFrom;
-		this.recordTo = recordTo;
+		
+		setRecordFrom(recordFrom);
+		setRecordTo(recordTo);
+		
 		this.document = document;
 	}
 
 	@Id
-	private long id;
+	private transient long id;
 	
 	public long getId() {
 		return id;
@@ -40,10 +43,14 @@ public class RecordReference implements Serializable {
 	 */
 	private transient Record recordFrom;
 	
+	private UUID recordFromQualifier;
+	
 	/**
 	 * Record where link ends
 	 */
-	private Record recordTo;
+	private transient  Record recordTo;
+	
+	private UUID recordToQualifier;
 	
 	/**
 	 * Document, assuring link between records
@@ -60,6 +67,7 @@ public class RecordReference implements Serializable {
 
 	public void setRecordFrom(Record recordFrom) {
 		this.recordFrom = recordFrom;
+		recordFromQualifier = recordFrom.getQualifier();
 	}
 	
 	public Record getRecordFrom() {
@@ -68,10 +76,32 @@ public class RecordReference implements Serializable {
 	
 	public void setRecordTo(Record recordTo) {
 		this.recordTo = recordTo;
+		recordToQualifier = recordTo.getQualifier();
 	}
 
 	public Record getRecordTo() {
 		return recordTo;
 	}
+
+
+	public UUID getRecordFromQualifier() {
+		return recordFromQualifier;
+	}
+
+
+	public void setRecordFromQualifier(UUID recordFromQualifier) {
+		this.recordFromQualifier = recordFromQualifier;
+	}
+
+
+	public UUID getRecordToQualifier() {
+		return recordToQualifier;
+	}
+
+
+	public void setRecordToQualifier(UUID recordToQualifier) {
+		this.recordToQualifier = recordToQualifier;
+	}
+	
 	
 }
