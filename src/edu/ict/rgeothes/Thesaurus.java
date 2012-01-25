@@ -9,6 +9,7 @@ import edu.ict.rgeothes.entity.Document;
 import edu.ict.rgeothes.entity.Record;
 import edu.ict.rgeothes.exceptions.DuplicateRecordException;
 import edu.ict.rgeothes.exceptions.RecordNotFoundException;
+import edu.ict.rgeothes.search.SearchQuery;
 
 public class Thesaurus {
 	
@@ -74,6 +75,11 @@ public class Thesaurus {
 		
 		records.put(rec.getQualifier(), rec);
 		
+	}
+
+	public List<Record> search(SearchQuery query) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

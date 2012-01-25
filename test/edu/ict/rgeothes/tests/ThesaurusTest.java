@@ -1,12 +1,21 @@
 package edu.ict.rgeothes.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.Assert;
 import org.junit.Test;
 
 import edu.ict.rgeothes.Thesaurus;
+import edu.ict.rgeothes.entity.Record;
+import edu.ict.rgeothes.search.DateRange;
+import edu.ict.rgeothes.search.SearchQuery;
 import edu.ict.rgeothes.tools.NskReestrParser;
+import edu.ict.rgeothes.tools.loaders.KzLoader;
 
 public class ThesaurusTest {
 
@@ -15,6 +24,50 @@ public class ThesaurusTest {
 		Thesaurus thesaurus = loadFromFile("input/novosib.txt");
 		assertNotNull(thesaurus);
 		assertEquals(843, thesaurus.getRecordsCount());
+	}
+	
+	@Test
+	public void testSimpleSearch() throws IOException{
+			Thesaurus thesaurus = loadTestRecords();
+
+			SearchQuery query = new SearchQuery();
+			query.setName("Алматы");
+			List<Record> records = thesaurus.search(query);
+			assertEquals(1, records.size());	
+			assertEquals("Алматы", getPrimaryName(records.get(0)));
+			//TODO more assertions
+			
+			query = new SearchQuery();
+			query.setName("Алматы");
+			query.setDateRange(new DateRange(1900, 1901));
+			records = thesaurus.search(query);
+			assertEquals(1, records.size());	
+			assertEquals("Верный", getPrimaryName(records.get(0)));
+			//TODO more assertions
+			
+			query = new SearchQuery();
+			query.setName("Алматы");
+			query.setDateRange(new DateRange(1980));
+			records = thesaurus.search(query);
+			assertEquals(1, records.size());
+			assertEquals("Алма-Ата", getPrimaryName(records.get(0)));
+			//TODO more assertions
+	}
+
+	private String getPrimaryName(Record record) {
+		return record.getPrimaryName().getName();
+	}
+
+	private Thesaurus loadTestRecords() throws IOException {
+		String fileName = "tests_input/Алмата.txt";
+		
+		File inputFile = new File(fileName);
+		List<String> inputLines = FileUtils.readLines(inputFile, "Unicode");
+		
+		Thesaurus thesaurus = new Thesaurus();
+		thesaurus.addRecords(new KzLoader().parseRecords(inputLines));
+		
+		return thesaurus;
 	}
 
 	private Thesaurus loadFromFile(String fileName) {
