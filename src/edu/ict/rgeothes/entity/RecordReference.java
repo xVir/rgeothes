@@ -1,5 +1,7 @@
 package edu.ict.rgeothes.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -9,7 +11,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="record_reference")
-public class RecordReference {
+public class RecordReference implements Serializable {
 
 	public RecordReference() {
 	}

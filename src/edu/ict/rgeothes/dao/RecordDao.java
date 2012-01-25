@@ -6,14 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.postgresql.PGConnection;
 
 import edu.ict.rgeothes.entity.Document;
 import edu.ict.rgeothes.entity.Location;
@@ -22,8 +15,6 @@ import edu.ict.rgeothes.entity.Point;
 import edu.ict.rgeothes.entity.Record;
 
 public class RecordDao {
-
-//	private static final SessionFactory sessionFactory = createSessionFactory();
 
 	private Connection connection;
 	
@@ -35,15 +26,6 @@ public class RecordDao {
 	public RecordDao(Connection connection) {
 		this.connection = connection;
 	}
-	
-
-	//private static SessionFactory createSessionFactory() {
-	//	Configuration configuration = new Configuration();
-		
-//		configuration.configure();
-		
-//		return configuration.buildSessionFactory();
-	//}
 
 	public void addRecords(List<Record> records) {
 
@@ -54,14 +36,6 @@ public class RecordDao {
 	}
 
 	private void insertRecord(Record rec) {
-		/*Session s = sessionFactory.getCurrentSession();
-		s.beginTransaction();
-
-		s.save(rec);
-
-		s.getTransaction().commit();
-		
-		*/
 		
 		try {
 			
@@ -89,12 +63,11 @@ public class RecordDao {
 			Statement statement = connection.createStatement();
 			ResultSet resultSet = statement.executeQuery(query);
 			
-			boolean next = resultSet.next();
+			resultSet.next();
 			long val = resultSet.getLong("nextval");
 			return val;
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -106,8 +79,6 @@ public class RecordDao {
 		List<String> result = new  ArrayList<>();
 		
 		result.add(createSqlFromRecord(rec));
-	
-		
 		
 		for (Name n : rec.getNames()) {
 			
@@ -121,6 +92,7 @@ public class RecordDao {
 			result.add(createSqlFromDocument(loc.getBeginDocument()));
 			result.add(createSqlFromDocument(loc.getEndDocument()));
 			
+			//TODO another location types
 			result.add(createSqlFromPoint(rec, (Point)loc));
 		}
 		

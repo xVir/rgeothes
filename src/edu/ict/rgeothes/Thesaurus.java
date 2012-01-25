@@ -15,7 +15,6 @@ public class Thesaurus {
 	private Map<UUID,Record> records = new HashMap<UUID, Record>(); 
 	
 	public Thesaurus() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public void initialize(){

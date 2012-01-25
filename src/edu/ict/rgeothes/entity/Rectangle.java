@@ -1,11 +1,13 @@
 package edu.ict.rgeothes.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("rectangle")
-public class Rectangle extends Location {
+public class Rectangle extends Location implements Serializable {
 
 	private Point point1;
 	private Point point2;

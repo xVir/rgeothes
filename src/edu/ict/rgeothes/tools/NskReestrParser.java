@@ -5,14 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
@@ -61,8 +59,7 @@ public class NskReestrParser {
 
 			System.out.println(gson.toJson(records.get(2)));
 			System.out.println();
-			System.out.println(gson
-					.toJson(records.get(2).getLocations().get(0)));
+			
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

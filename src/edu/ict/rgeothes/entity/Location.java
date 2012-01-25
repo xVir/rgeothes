@@ -1,5 +1,7 @@
 package edu.ict.rgeothes.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
@@ -15,7 +17,7 @@ import javax.persistence.InheritanceType;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="location_type",discriminatorType=DiscriminatorType.STRING)
 @DiscriminatorValue("location")
-public abstract class Location {
+public abstract class Location implements Serializable {
 
 	@Id
 	private long id;

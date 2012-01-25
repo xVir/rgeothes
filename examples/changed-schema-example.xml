@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Vocabulary Date="2001-01-01" Title=""
+	xmlns="http://localhost/cgs-changed-schema" xmlns:vp="http://localhost/namespace/vp"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://localhost/cgs-changed-schema Getty_Vocabulary_TGN_changed.xsd ">
+	<Subject>
+
+		<Record_Type>Administrative</Record_Type>
+
+		<Ancestors>
+			<Preferred_Ancestor_Branch>
+				<Ancestor>
+					<Immediate>
+						<Term>Term</Term>
+						<Parent_ID>
+							<VP_Subject_ID>1000000</VP_Subject_ID>
+						</Parent_ID>
+						<Hier_Rel_Type>Genus/Species-BTG</Hier_Rel_Type>
+					</Immediate>
+				</Ancestor>
+			</Preferred_Ancestor_Branch>
+		</Ancestors>
+
+
+		<Place_Types>
+			<Preferred_Place_Type>
+				<Place_Type_ID>81145/oblast</Place_Type_ID>
+				<Display_Order>0</Display_Order>
+			</Preferred_Place_Type>
+		</Place_Types>
+
+
+		<Sort_Order>1</Sort_Order>
+		<Subject_Contributor>
+			<Contributor_id>10000000/VP</Contributor_id>
+			<Editor_name>Ivan Ivanov</Editor_name>
+			<Editor_email>ivanov@example.com</Editor_email>
+		</Subject_Contributor>
+		<Terms>
+			<Preferred_Term>
+				<Term_Sources>
+					<Term_Source>
+						<Source>
+							<Source_ID>9004947</Source_ID>
+							<Brief_Citation>Russia, National Geographic (1993)</Brief_Citation>
+							<Full_Citation>"Russia." National Geographic Magazine CLXXXIII/3 (1993)</Full_Citation>
+							<Date_Begin>1993-01-01</Date_Begin>
+							<Date_End>2049-01-01</Date_End>
+							<Date_Creation>1993-01-01</Date_Creation>
+							<Uri>URI of document</Uri>
+						</Source>
+					</Term_Source>
+				</Term_Sources>
+				<Term_Text>Novosibirsk</Term_Text>
+				<Language>
+					<Term_Languages>
+						<Term_Language>70051/English</Term_Language>
+					</Term_Languages>
+				</Language>
+			</Preferred_Term>
+
+		</Terms>
+
+		<Coordinates>
+
+			<Preferred_Coordinates>
+				<SourceDocument>
+					<Source_ID>9004947</Source_ID>
+					<Brief_Citation>Russia, National Geographic (1993)</Brief_Citation>
+					<Full_Citation>"Russia." National Geographic Magazine CLXXXIII/3 (1993)</Full_Citation>
+					<Date_Begin>1993-01-01</Date_Begin>
+					<Date_End>2049-01-01</Date_End>
+					<Date_Creation>1993-01-01</Date_Creation>
+					<Uri>URI of document</Uri>
+				</SourceDocument>
+				<Point Latitude="55.033333" Longitude="82.916667" />
+			</Preferred_Coordinates>
+
+			<Non-Preferred_Coordinates>
+				<SourceDocument>
+					<Source_ID>0000000</Source_ID>
+					<Brief_Citation>Other source</Brief_Citation>
+					<Full_Citation>Other source</Full_Citation>
+					<Date_Begin>1977-01-01</Date_Begin>
+					<Date_End>1993-01-01</Date_End>
+					<Date_Creation>1977-01-01</Date_Creation>
+					<Uri>URI of document</Uri>
+				</SourceDocument>
+				<Point Latitude="55.033333" Longitude="82.916667" />
+			</Non-Preferred_Coordinates>
+
+		</Coordinates>
+	</Subject>
+
+
+
+</Vocabulary>

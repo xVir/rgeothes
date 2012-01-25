@@ -1,5 +1,6 @@
 package edu.ict.rgeothes.entity;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,7 +20,7 @@ import edu.ict.rgeothes.ApplicationContext;
  */
 @Entity
 @Table(name="thesaurus_name")
-public class Name {
+public class Name implements Serializable{
 
 	private static final DateFormat lifetimeFormat = new SimpleDateFormat("yyyy.MM.dd");
 	

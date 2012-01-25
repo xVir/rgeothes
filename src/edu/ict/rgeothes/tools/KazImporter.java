@@ -1,6 +1,8 @@
-package edu.ict.rgeothes;
+package edu.ict.rgeothes.tools;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,18 +13,26 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
+
 import edu.ict.rgeothes.dao.RecordDao;
 import edu.ict.rgeothes.entity.Document;
+import edu.ict.rgeothes.entity.Location;
 import edu.ict.rgeothes.entity.Name;
 import edu.ict.rgeothes.entity.Point;
 import edu.ict.rgeothes.entity.Record;
-import edu.ict.rgeothes.tools.CoordinatesConverter;
-import edu.ict.rgeothes.tools.DateBuilder;
+import edu.ict.rgeothes.entity.RecordReference;
+import edu.ict.rgeothes.entity.Rectangle;
 
-public class FileImporter {
-	
+public class KazImporter {
+
 	private static final String PRIMARY_LANG = "kz";
 	private static final String SECONDARY_LANG = "ru";
+	
+	private static final boolean ToDatabase = false;
+	private static final boolean ToXml = true;
 
 	/**
 	 * @param args
@@ -41,8 +51,6 @@ public class FileImporter {
 		
 		File inputFile = new File(fileName);
 		List<String> inputLines = FileUtils.readLines(inputFile, "Unicode");
-
-
 		
 		if (inputLines.size() <= 0) {
 			System.out.println("No data for processing");
@@ -56,6 +64,44 @@ public class FileImporter {
 			return;
 		}
 		
+		List<Record> result = parseRecords(inputLines);
+		
+		//trying to save 
+		
+		if (ToDatabase) {
+			Connection connection = DriverManager.getConnection(
+					"jdbc:postgresql://127.0.0.1:5432/rgeothes", "postgres",
+					"postgres");
+
+			connection.setAutoCommit(true);
+			
+			new RecordDao(connection).addRecords(result);
+	
+		}
+
+		if (ToXml) {
+			
+			XStream xstream = new XStream(new DomDriver());
+			
+			xstream.alias("record", Record.class);
+			xstream.alias("name", Name.class);
+			xstream.alias("document", Document.class);
+			xstream.alias("recordReference", RecordReference.class);
+			xstream.alias("location", Location.class);
+			xstream.alias("point", Point.class);
+			xstream.alias("rectangle", Rectangle.class);
+			
+			String serialized = xstream.toXML(result);
+			
+			File outputFile = new File("kz.xml");
+		
+			FileUtils.writeStringToFile(outputFile, serialized, "Unicode");
+			
+		}
+		
+	}
+
+	private static List<Record> parseRecords(List<String> inputLines) {
 		List<Record> result = new ArrayList<Record>(); 
 		for (int i = 1; i < inputLines.size(); i++) {
 			String inputString = inputLines.get(i);
@@ -90,18 +136,7 @@ public class FileImporter {
 			result.add(record);
 			
 		}
-		
-		//trying to save 
-		
-
-		Connection connection = DriverManager.getConnection(
-				"jdbc:postgresql://127.0.0.1:5432/rgeothes", "postgres",
-				"postgres");
-
-		connection.setAutoCommit(true);
-		
-		new RecordDao(connection).addRecords(result);
-
+		return result;
 	}
 
 	private static Point createPoint(String pointData) {

@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by Gregg (J. Paul 
+	Getty Trust) -->
+<!-- Getty Vocabulary TGN Contribution Schema - Release 1.0, 07/03/2007 -->
+<xs:schema xmlns="http://localhost/cgs-changed-schema"
+	xmlns:vp="http://localhost/namespace/vp" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://localhost/cgs-changed-schema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:import namespace="http://localhost/namespace/vp"
+		schemaLocation="tgn_place_type.xsd" />
+	<xs:import namespace="http://localhost/namespace/vp"
+		schemaLocation="tgn_language.xsd" />
+	<xs:import namespace="http://localhost/namespace/vp"
+		schemaLocation="tgn_associative_type.xsd" />
+	<xs:import namespace="http://localhost/namespace/vp"
+		schemaLocation="tgn_contrib.xsd" />
+	<xs:import namespace="http://localhost/namespace/vp"
+		schemaLocation="tgn_lookup_lists.xsd" />
+	<xs:element name="Vocabulary">
+		<xs:annotation>
+			<xs:documentation>Getty Vocabulary TGN Contribution Schema - Release
+				1.0, 07/03/2007</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Subject" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="Ancestors">
+								<xs:annotation>
+									<xs:documentation>There can be one and only one preferred
+										ancester branch, but zero to many non-preferrened ancester
+										branches</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="Preferred_Ancestor_Branch">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Ancestor">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Immediate" type="ParentType" />
+																<xs:element name="Other" type="ParentType"
+																	minOccurs="0" maxOccurs="unbounded" />
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Non-Preferred_Ancestor_Branches"
+											minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Non-Preferred_Ancestor_Branch"
+														maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Ancestor">
+																	<xs:complexType>
+																		<xs:sequence>
+																			<xs:element name="Immediate" type="ParentType" />
+																			<xs:element name="Other" type="ParentType"
+																				minOccurs="0" maxOccurs="unbounded" />
+																		</xs:sequence>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:all>
+									<xs:attribute name="Broad_Parent_ID" type="VP_Subject_ID"
+										use="optional" default="1000000" />
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Associative_Relationships"
+								minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Associative_Relationship"
+											minOccurs="0" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:all>
+													<xs:element name="Description" type="xs:string"
+														minOccurs="0" />
+													<xs:element name="AR_Date" minOccurs="0">
+														<xs:complexType>
+															<xs:all>
+																<xs:element name="Display_Date" type="xs:string" />
+																<xs:element name="Start_Date" type="Geog_Date" />
+																<xs:element name="End_Date" type="Geog_Date" />
+															</xs:all>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="Historic_Flag"
+														type="vp:associative_rels_historic_flag" minOccurs="0" />
+													<xs:element name="Relationship_Type" type="vp:ar_code" />
+													<xs:element name="Related_Subject_ID">
+														<xs:complexType>
+															<xs:choice>
+																<xs:element name="VP_Subject_ID" type="VP_Subject_ID" />
+																<xs:element name="Contrib_Subject_ID" type="xs:string" />
+															</xs:choice>
+														</xs:complexType>
+													</xs:element>
+												</xs:all>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Coordinates" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>TGN only</xs:documentation>
+								</xs:annotation>
+								<!-- NOTE Begin of changes -->
+								<xs:complexType>
+
+									<xs:sequence>
+										<xs:element name="Preferred_Coordinates" type="Coordinates"
+											minOccurs="1" maxOccurs="1" />
+										<xs:element name="Non-Preferred_Coordinates" type="Coordinates"
+											minOccurs="0" maxOccurs="unbounded" />
+									</xs:sequence>
+
+								</xs:complexType>
+								<!-- NOTE End of changes -->
+
+							</xs:element>
+							<xs:element name="Descriptive_Notes" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Descriptive_Note" minOccurs="0"
+											maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:all>
+													<xs:element name="Note_Text" type="xs:string" />
+													<xs:element name="Note_Language" type="vp:language_code" />
+													<xs:element name="Note_Sources">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Note_Source" maxOccurs="unbounded">
+																	<xs:complexType>
+																		<xs:all>
+																			<xs:element name="Source" type="Document" />
+																			<xs:element name="Page" type="xs:string"
+																				minOccurs="0" />
+																		</xs:all>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:all>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Place_Types">
+								<xs:annotation>
+									<xs:documentation>TGN only. There can be one and only one
+										preferred Place_Types branch, but zero to many non-preferrened
+										Place_Types branches</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Preferred_Place_Type" type="Place_TypeType" />
+										<xs:element name="Non-Preferred_Place_Type" type="Place_TypeType"
+											minOccurs="0" maxOccurs="unbounded" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Record_Type" type="vp:sub_record_type"
+								minOccurs="0" />
+							<xs:element name="Sort_Order" type="xs:int" default="0" />
+							<xs:element name="Special_Project" type="xs:string"
+								minOccurs="0" />
+							<xs:element name="Subject_Contributor">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Contributor_id" type="vp:contrib_code" />
+										<xs:element name="Contrib_subject_id" type="xs:string"
+											minOccurs="0" />
+										<xs:element name="Contrib_Note" type="xs:string"
+											minOccurs="0" />
+										<xs:element name="Editor_name" type="xs:string" />
+										<xs:element name="Editor_email" type="xs:string" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Subject_Sources" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Subject_Source" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:all>
+													<xs:element name="Source" type="Document" />
+													<xs:element name="Page" type="xs:string"
+														minOccurs="0" />
+												</xs:all>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="Terms">
+								<xs:annotation>
+									<xs:documentation>There can be one and only one preferred term,
+										but zero to many non-preferrened terms</xs:documentation>
+								</xs:annotation>
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Preferred_Term" type="TermType" />
+										<xs:element name="Non-Preferred_Term" type="TermType"
+											minOccurs="0" maxOccurs="unbounded" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+						<xs:attribute name="Subject_ID" type="VP_Subject_ID"
+							use="optional" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="Title" type="xs:string" use="required" />
+			<xs:attribute name="Part" type="xs:string" use="optional" />
+			<xs:attribute name="Date" type="xs:date" use="required" />
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="VP_Subject_ID">
+		<xs:annotation>
+			<xs:documentation>The VCS unique identifier for a subject
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:long">
+			<xs:minInclusive value="1000000" />
+			<xs:maxInclusive value="699999999" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Historical_Date">
+		<xs:annotation>
+			<xs:documentation>Years recording historical events
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:maxInclusive value="9999" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Geog_Date">
+		<xs:annotation>
+			<xs:documentation>Years of geographic or geologic events
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:maxInclusive value="9999" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="Latitude_ReferenceType">
+		<xs:annotation>
+			<xs:documentation>Set of values to define a single latitude
+				coordinate (TGN only)</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Degrees">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0" />
+						<xs:maxInclusive value="90" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Minutes">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0" />
+						<xs:maxInclusive value="59" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Seconds">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0" />
+						<xs:maxInclusive value="59" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Direction">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="North" />
+						<xs:enumeration value="South" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Decimal">
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:minInclusive value="0" />
+						<xs:maxInclusive value="90" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="Longitude_ReferenceType">
+		<xs:annotation>
+			<xs:documentation>Set of values to define a single longitude
+				coordinate (TGN only)</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Degrees">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0" />
+						<xs:maxInclusive value="180" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Minutes">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0" />
+						<xs:maxInclusive value="59" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Seconds">
+				<xs:simpleType>
+					<xs:restriction base="xs:integer">
+						<xs:minInclusive value="0" />
+						<xs:maxInclusive value="59" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Direction">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="East" />
+						<xs:enumeration value="West" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Decimal">
+				<xs:simpleType>
+					<xs:restriction base="xs:decimal">
+						<xs:minInclusive value="0" />
+						<xs:maxInclusive value="180" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="Document">
+		<xs:annotation>
+			<xs:documentation>Set of values to reference a bibliographic source
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Source_ID" type="xs:string" />
+			<xs:element name="Brief_Citation" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="Full_Citation" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="Biblio_Note" type="xs:string" minOccurs="0" />
+
+			<!-- NOTE Begin of changes -->
+			<xs:element name="Date_Begin" type="xs:date" />
+			<xs:element name="Date_End" type="xs:date" />
+			<xs:element name="Date_Creation" type="xs:date" />
+
+			<xs:element name="Uri" type="xs:string" />
+			<!-- NOTE End of changes -->
+
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="ParentType">
+		<xs:annotation>
+			<xs:documentation>Parent type for the Ancestors element
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Historic_Flag" type="vp:sub_rel_historic_flag"
+				minOccurs="0" />
+			<xs:element name="PR_Date" minOccurs="0">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="Display_Date" type="xs:string" />
+						<xs:element name="Start_Date" type="Geog_Date" />
+						<xs:element name="End_Date" type="Geog_Date" />
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Term" type="xs:string" />
+			<xs:element name="Parent_ID">
+				<xs:complexType>
+					<xs:choice>
+						<xs:element name="VP_Subject_ID" type="VP_Subject_ID" />
+						<xs:element name="Contrib_Subject_ID" type="xs:string" />
+					</xs:choice>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Hier_Rel_Type" type="vp:sub_rel_hier_rel_type" />
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="Place_TypeType">
+		<xs:annotation>
+			<xs:documentation>Palce_Type type for the Place type element
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="Place_Type_ID" type="vp:ptype_code" />
+			<xs:element name="Display_Order" type="xs:unsignedShort" />
+			<xs:element name="Historic_Flag" type="vp:ptype_role_rels_historic_flag"
+				minOccurs="0" />
+			<xs:element name="PT_Date" minOccurs="0">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="Display_Date" type="xs:string" />
+						<xs:element name="Start_Date" type="Geog_Date" />
+						<xs:element name="End_Date" type="Geog_Date" />
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="TermType">
+		<xs:annotation>
+			<xs:documentation>Term block for the Terms element</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="AACR2_Flag" type="vp:term_aacr2_flag"
+				minOccurs="0" />
+			<xs:element name="Contributor_Term_ID" type="xs:string"
+				minOccurs="0" />
+			<xs:element name="Display_Name" type="vp:term_display_name"
+				minOccurs="0" />
+			<xs:element name="Display_Order" type="xs:unsignedShort"
+				default="0" minOccurs="0" />
+			<xs:element name="Historic_Flag" type="vp:term_historic_flag"
+				minOccurs="0" />
+			<xs:element name="Language" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Term_Languages" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:all>
+									<xs:element name="Term_Language" type="vp:language_code" />
+									<xs:element name="Preferred" default="Non Preferred"
+										minOccurs="0">
+										<xs:simpleType>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Preferred" />
+												<xs:enumeration value="Non Preferred" />
+												<xs:enumeration value="Undetermined" />
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:element>
+									<xs:element name="Qualifier" type="xs:string"
+										minOccurs="0" />
+									<xs:element name="Term_Type" type="vp:language_rels_term_type"
+										minOccurs="0" />
+									<xs:element name="Part_of_Speech" minOccurs="0" />
+									<xs:element name="Lang_Stat" type="vp:language_rels_lang_stat"
+										minOccurs="0" />
+								</xs:all>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Other_Flags" type="vp:term_other_flags"
+				minOccurs="0" />
+			<xs:element name="Term_Date" minOccurs="0">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="Display_Date" type="xs:string" />
+						<xs:element name="Start_Date" type="Historical_Date" />
+						<xs:element name="End_Date" type="Historical_Date" />
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Term_Sources">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Term_Source" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:all>
+									<xs:element name="Source" type="Document" />
+									<xs:element name="Page" type="xs:string" minOccurs="0" />
+									<xs:element name="Preferred" type="vp:source_rels_term_preferred"
+										minOccurs="0" />
+								</xs:all>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Term_Text" type="xs:string" />
+			<xs:element name="Vernacular" type="vp:term_vernacular"
+				minOccurs="0" />
+		</xs:all>
+	</xs:complexType>
+	<xs:simpleType name="VP_Source_ID">
+		<xs:annotation>
+			<xs:documentation>The VCS unique identifier for a source
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:long">
+			<xs:minInclusive value="2000000000" />
+			<xs:maxInclusive value="2499999999" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="Merged_Status_Value">
+		<xs:annotation>
+			<xs:documentation>Valid merged status values</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Merged" />
+			<xs:enumeration value="Not Merged" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<!-- NOTE Begin of changes -->
+	<xs:complexType name="Point">
+		<xs:annotation>
+			<xs:documentation>Pair of longitude and latitude coordinates (TGN
+				only)</xs:documentation>
+		</xs:annotation>
+
+		<xs:attribute name="Latitude" use="required">
+
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:minInclusive value="0" />
+					<xs:maxInclusive value="90" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+
+		<xs:attribute name="Longitude" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:decimal">
+					<xs:minInclusive value="0" />
+					<xs:maxInclusive value="180" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+
+		<xs:attribute name="Elevation" type="xs:decimal" use="optional" />
+
+	</xs:complexType>
+
+	<xs:complexType name="Composition">
+		<xs:annotation>
+			<xs:documentation>
+				Composition from few elements
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:choice minOccurs="2" maxOccurs="unbounded">
+				<xs:element name="Region" type="Region" />
+				<xs:element name="Rectangle" type="Rectangle" />
+				<xs:element name="Circle" type="Circle" />
+				<xs:element name="Point" type="Point" />
+				<xs:element name="Composition" type="Composition" />
+			</xs:choice>
+		</xs:sequence>
+
+		<xs:attribute name="composition_type" use="required">
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="Union" />
+					<xs:enumeration value="Intersection" />
+					<xs:enumeration value="Difference"></xs:enumeration>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="Region">
+		<xs:sequence>
+			<xs:element name="BeginPoint" type="Point" maxOccurs="1"
+				minOccurs="1" />
+
+			<xs:element name="Point" type="Point" minOccurs="0"
+				maxOccurs="unbounded" />
+
+			<xs:element name="EndPoint" type="Point" maxOccurs="1"
+				minOccurs="1" />
+		</xs:sequence>
+
+		<xs:attribute name="Closed" type="xs:boolean" default="true" />
+
+	</xs:complexType>
+
+	<xs:complexType name="Rectangle">
+		<xs:sequence>
+			<xs:element name="Point1" maxOccurs="1" minOccurs="1"
+				type="Point" />
+			<xs:element name="Point2" maxOccurs="1" minOccurs="1"
+				type="Point" />
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Circle">
+		<xs:all>
+			<xs:element name="Center" type="Point" />
+			<xs:element name="Radius">
+				<xs:complexType>
+					<xs:attribute name="Value" type="xs:decimal" />
+					<xs:attribute name="CoordinateSystem" type="xs:string"></xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="Coordinates">
+		<xs:sequence>
+			<xs:element name="SourceDocument" type="Document" />
+			<xs:choice minOccurs="1" maxOccurs="1">
+				<xs:element name="Point" type="Point" />
+				<xs:element name="Rectangle" type="Rectangle" />
+				<xs:element name="Region" type="Region" />
+				<xs:element name="Circle" type="Circle" />
+				<xs:element name="Composition" type="Composition" />
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<!-- NOTE End of changes -->
+
+</xs:schema>

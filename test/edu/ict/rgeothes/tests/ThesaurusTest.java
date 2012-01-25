@@ -1,20 +1,11 @@
 package edu.ict.rgeothes.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Date;
-
-import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
-import com.itextpdf.text.pdf.parser.TextRenderInfo;
-
 import edu.ict.rgeothes.Thesaurus;
-import edu.ict.rgeothes.exceptions.DuplicateRecordException;
 import edu.ict.rgeothes.tools.NskReestrParser;
 
 public class ThesaurusTest {

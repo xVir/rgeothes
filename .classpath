@@ -33,6 +33,9 @@
 	<classpathentry kind="lib" path="lib/hibernate-3.6.8/lib/required/javassist-3.12.0.GA.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate-3.6.8/lib/required/jta-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate-3.6.8/lib/required/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/xstream/xstream-1.4.2.jar" sourcepath="C:/Users/danil/.m2/repository/com/thoughtworks/xstream/xstream/1.4.2/xstream-1.4.2-sources.jar"/>
+	<classpathentry kind="lib" path="lib/xstream/kxml2-2.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/xstream/xmlpull-1.1.3.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/pdfbox/pdfbox-1.5.0.jar" sourcepath="lib/pdfbox/pdfbox-1.5.0-src.zip"/>
 	<classpathentry kind="lib" path="lib/itext/itextpdf-5.1.1.jar" sourcepath="lib/itext/itextpdf-5.1.1-sources.jar">

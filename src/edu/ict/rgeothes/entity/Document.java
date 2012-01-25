@@ -1,5 +1,6 @@
 package edu.ict.rgeothes.entity;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,7 +23,7 @@ import edu.ict.rgeothes.ApplicationContext;
  */
 @Entity
 @Table(name="thesaurus_document")
-public class Document {
+public class Document implements Serializable{
 
 	public static final Document UNKNOWN_DOCUMENT = new Document(
 			"unknown document");

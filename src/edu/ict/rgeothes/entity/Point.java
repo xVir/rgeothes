@@ -1,5 +1,7 @@
 package edu.ict.rgeothes.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -9,7 +11,7 @@ import edu.ict.rgeothes.ApplicationContext;
 
 @Entity
 @DiscriminatorValue("point")
-public class Point extends Location {
+public class Point extends Location implements Serializable {
 
 	private double latitude;
 	

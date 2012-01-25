@@ -1,5 +1,6 @@
 package edu.ict.rgeothes.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -20,7 +21,7 @@ import edu.ict.rgeothes.ApplicationContext;
  */
 @Entity
 @Table(name="thesaurus_record")
-public class Record {
+public class Record implements Serializable {
 
 	/**
 	 * Record, which is the root of thesaurus (let's assume its "Earth")
