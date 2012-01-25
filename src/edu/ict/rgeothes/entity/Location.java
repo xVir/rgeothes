@@ -14,7 +14,7 @@ import javax.persistence.InheritanceType;
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="location_type",discriminatorType=DiscriminatorType.STRING)
-@DiscriminatorValue("Plane")
+@DiscriminatorValue("location")
 public abstract class Location {
 
 	@Id

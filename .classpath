@@ -26,7 +26,7 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/RGeoThes/lib/hibernate-3.6.8/javadocs.zip!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/hibernate-3.6.8/lib/jpa/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.6.8/lib/jpa/hibernate-jpa-2.0-api-1.0.1.Final.jar" sourcepath="C:/Users/danil/.m2/repository/org/hibernate/javax/persistence/hibernate-jpa-2.0-api/1.0.1.Final/hibernate-jpa-2.0-api-1.0.1.Final-sources.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate-3.6.8/lib/required/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate-3.6.8/lib/required/commons-collections-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate-3.6.8/lib/required/dom4j-1.6.1.jar"/>

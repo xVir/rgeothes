@@ -1,25 +1,16 @@
 package edu.ict.rgeothes;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
-
 import edu.ict.rgeothes.dao.RecordDao;
 import edu.ict.rgeothes.entity.Document;
 import edu.ict.rgeothes.entity.Name;
@@ -47,13 +38,6 @@ public class FileImporter {
 
 		String fileName = args[0];
 		System.out.println("Processing " + fileName);
-//
-//		Reader in = new InputStreamReader(new FileInputStream(fileName), "Unicode");
-//		BufferedReader r = new BufferedReader(in);
-//		String readLine = r.readLine();
-//		String readLine2 = r.readLine();
-//		r.close();
-//		
 		
 		File inputFile = new File(fileName);
 		List<String> inputLines = FileUtils.readLines(inputFile, "Unicode");
