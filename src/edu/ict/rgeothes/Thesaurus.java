@@ -109,7 +109,7 @@ public class Thesaurus {
 			
 		}
 
-		return null;
+		return relevantRecords;
 	}
 
 	private Collection<? extends Record> getAllLifecycleRecords(Record record) {
