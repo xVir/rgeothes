@@ -111,4 +111,28 @@ public class DateRange {
 
 	}
 
+	public boolean intersects(DateRange dateRange) {
+		
+		if (dateRange.isDateInRange(beginDate) && !dateRange.isDateInRange(endDate)) {
+			return true;
+		}
+		
+		if (!dateRange.isDateInRange(beginDate) && dateRange.isDateInRange(endDate)) {
+			return true;
+		}
+		
+		// TODO create unit test for DateRange.intersects
+		return false;
+	}
+
+	public boolean contains(DateRange dateRange) {
+		
+		if (isDateInRange(dateRange.getBeginDate()) && isDateInRange(dateRange.getEndDate())) {
+			return true;
+		}
+		
+		// TODO create unit test for DateRange.contains
+		return false;
+	}
+
 }

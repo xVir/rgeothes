@@ -2,6 +2,7 @@ package edu.ict.rgeothes.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,37 +16,38 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import edu.ict.rgeothes.ApplicationContext;
+import edu.ict.rgeothes.search.DateRange;
 
 /**
  * Main class, representing record of thesaurus
  */
 @Entity
-@Table(name="thesaurus_record")
+@Table(name = "thesaurus_record")
 public class Record implements Serializable {
 
 	/**
 	 * Record, which is the root of thesaurus (let's assume its "Earth")
 	 */
 	public static final Record ROOT_RECORD = new Record();
-	
+
 	@Id
 	private UUID qualifier;
 
 	@Transient
 	private RecordReference previous;
-	
+
 	@OneToMany
 	private List<Name> names = new ArrayList<Name>();
 
 	@OneToMany
 	private List<Location> locations = new ArrayList<Location>();
-	
+
 	/**
 	 * Objects, with current object contains
 	 */
 	@Transient
 	private List<RecordReference> contains = new ArrayList<RecordReference>();
-	
+
 	/**
 	 * Objects, which contains current object
 	 */
@@ -55,9 +57,7 @@ public class Record implements Serializable {
 	public Record() {
 		qualifier = UUID.randomUUID();
 	}
-	
-	
-	
+
 	public List<Name> getNames() {
 		return names;
 	}
@@ -86,105 +86,131 @@ public class Record implements Serializable {
 		this.locations = locations;
 	}
 
-	public void addName(Name name){
+	public void addName(Name name) {
 		names.add(name);
 	}
-	
-	public void addBelongsTo(Record rec, Document doc){
+
+	public void addBelongsTo(Record rec, Document doc) {
 		RecordReference recordReference = new RecordReference();
 		recordReference.setDocument(doc);
 		recordReference.setRecordFrom(this);
 		recordReference.setRecordTo(rec);
 		belongTo.add(recordReference);
 	}
-	
-	public void addContains(Record rec, Document doc){
+
+	public void addContains(Record rec, Document doc) {
 		RecordReference recordReference = new RecordReference(this, rec, doc);
 		contains.add(recordReference);
 	}
-	
-	public void addLocation(Location location){
+
+	public void addLocation(Location location) {
 		locations.add(location);
 	}
-	
+
 	public List<Location> getLocations() {
 		return locations;
 	}
-	
-	
-	public Name getPrimaryName(){
+
+	public Name getPrimaryName() {
 		return names.get(0);
 	}
-	
-	public void setPrimaryName(Name name){
+
+	public void setPrimaryName(Name name) {
 		if (names.size() == 0) {
-			names.add(0, name);			
-		}
-		else{
+			names.add(0, name);
+		} else {
 			names.set(0, name);
 		}
 	}
-	
-	public Record getPrimaryParent(){
-		
-		if (this == ROOT_RECORD){
+
+	public Record getPrimaryParent() {
+
+		if (this == ROOT_RECORD) {
 			return null;
 		}
-		
-		if (belongTo.size() > 0){
+
+		if (belongTo.size() > 0) {
 			return belongTo.get(0).getRecordTo();
-		}
-		else{
-			throw new IllegalStateException("Only ROOT_RECORD could not have Parent");
+		} else {
+			throw new IllegalStateException(
+					"Only ROOT_RECORD could not have Parent");
 		}
 	}
-	
-	public void setPrimaryParent(Record rec, Document doc){
-		
+
+	public void setPrimaryParent(Record rec, Document doc) {
+
 		if (belongTo.size() == 0) {
 			belongTo.add(0, new RecordReference(this, rec, doc));
+		} else {
+			belongTo.set(0, new RecordReference(this, rec, doc));
 		}
-		else {
-			belongTo.set(0, new RecordReference(this, rec, doc));	
-		}
-		
+
 	}
-	
+
 	public UUID getQualifier() {
 		return qualifier;
 	}
-	
+
 	public void setQualifier(UUID qualifier) {
 		this.qualifier = qualifier;
 	}
-	
+
 	public RecordReference getPrevious() {
 		return previous;
 	}
-	
+
 	public void setPrevious(RecordReference previous) {
 		this.previous = previous;
 	}
-	
+
 	@Override
 	public String toString() {
 		ToStringBuilder stringBuilder = new ToStringBuilder(this,
 				ApplicationContext.getInstance().getToStringStyle());
-		stringBuilder.append("qualifier",getQualifier());
-		stringBuilder.append("primaryName",getPrimaryName());
-		stringBuilder.append("lifeteime",getPrimaryName().getLifetime());
-		stringBuilder.append("endDoc",getPrimaryName().getEndDocument());
+		stringBuilder.append("qualifier", getQualifier());
+		stringBuilder.append("primaryName", getPrimaryName());
+		stringBuilder.append("lifeteime", getPrimaryName().getLifetime());
+		stringBuilder.append("endDoc", getPrimaryName().getEndDocument());
 		stringBuilder.append("names", names, true);
-		stringBuilder.append("locations",locations,true);
+		stringBuilder.append("locations", locations, true);
 		return stringBuilder.toString();
 	}
-	
+
 	@Override
 	public int hashCode() {
 		HashCodeBuilder hashCodeBuilder = new HashCodeBuilder();
-		
+
 		hashCodeBuilder.append(getQualifier());
-		
+
 		return hashCodeBuilder.toHashCode();
+	}
+
+	public boolean hasName(String name) {
+
+		for (Name recordName : names) {
+			if (recordName.getName().equalsIgnoreCase(name)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	public boolean hasNamesValidIn(DateRange dateRange) {
+		for (Name name : names) {
+			
+			DateRange validRange = name.getValidRange();
+			
+			if (validRange.intersects(dateRange)) {
+				return true;
+			}
+			
+			if (validRange.contains(dateRange))
+			{
+				
+			}
+			
+		}
+		return false;
 	}
 }

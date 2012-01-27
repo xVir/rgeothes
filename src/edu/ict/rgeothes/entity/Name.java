@@ -14,6 +14,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import edu.ict.rgeothes.ApplicationContext;
+import edu.ict.rgeothes.search.DateRange;
 
 /*
  * Class, representing name of the record
@@ -128,7 +129,7 @@ public class Name implements Serializable{
 	
 
 	/**
-	 * Returns true, if document is valid on specified date,
+	 * Returns true, if name is valid on specified date,
 	 * otherwise false
 	 * @param date
 	 * @return
@@ -167,6 +168,10 @@ public class Name implements Serializable{
 		}
 		
 		return builder.toString();
+	}
+
+	public DateRange getValidRange() {
+		return new DateRange(beginDocument.getDate(), endDocument.getDate());
 	}
 	
 }

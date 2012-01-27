@@ -1,5 +1,7 @@
 package edu.ict.rgeothes.search;
 
+import org.apache.commons.lang.StringUtils;
+
 public class SearchQuery {
 	private String name;
 
@@ -40,6 +42,14 @@ public class SearchQuery {
 		this.name = name;
 		this.dateRange = dateRange;
 		this.searchCoordinates = searchCoordinates;
+	}
+
+	public boolean isNameSpecified() {
+		return StringUtils.isNotBlank(name);
+	}
+
+	public boolean isDateRangeSpecified() {
+		return dateRange!=null;
 	}
 	
 	
