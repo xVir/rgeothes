@@ -83,6 +83,11 @@ public class DateRange {
 		this.endDate = endDate;
 	}
 
+	/**
+	 * Returns true only if specified date is in this range
+	 * @param date
+	 * @return
+	 */
 	public boolean isDateInRange(Date date) {
 		assert beginDate != null;
 
@@ -111,6 +116,11 @@ public class DateRange {
 
 	}
 
+	/**
+	 * Returns true if two date ranges have common points 
+	 * @param dateRange
+	 * @return
+	 */
 	public boolean intersects(DateRange dateRange) {
 		
 		if (dateRange.isDateInRange(beginDate) && !dateRange.isDateInRange(endDate)) {
@@ -125,6 +135,11 @@ public class DateRange {
 		return false;
 	}
 
+	/**
+	 * Returns true if this date range fully contains specified date range
+	 * @param dateRange
+	 * @return
+	 */
 	public boolean contains(DateRange dateRange) {
 		
 		if (isDateInRange(dateRange.getBeginDate()) && isDateInRange(dateRange.getEndDate())) {

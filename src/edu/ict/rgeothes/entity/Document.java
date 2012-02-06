@@ -19,6 +19,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 import edu.ict.rgeothes.ApplicationContext;
+import edu.ict.rgeothes.utils.DateUtils;
 
 /**
  * Class representing document item
@@ -33,20 +34,8 @@ public class Document implements Serializable {
 	static {
 		UNKNOWN_DOCUMENT.setId(0);
 
-		GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
-		calendar.setGregorianChange(new GregorianCalendar(1918,
-				Calendar.FEBRUARY, 14).getTime());
-
-		calendar.set(Calendar.YEAR, 3000);
-		calendar.set(Calendar.MONTH, Calendar.JANUARY);
-		calendar.set(Calendar.DAY_OF_MONTH, 1);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-
-		UNKNOWN_DOCUMENT.setDate(calendar.getTime());
-		UNKNOWN_DOCUMENT.setCreationDate(calendar.getTime());
+		UNKNOWN_DOCUMENT.setDate( DateUtils.CreateDate(3000, Calendar.JANUARY, 1));
+		UNKNOWN_DOCUMENT.setCreationDate(DateUtils.CreateDate(3000, Calendar.JANUARY, 1));
 	}
 
 	public Document() {
