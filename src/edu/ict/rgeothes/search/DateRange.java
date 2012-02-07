@@ -35,25 +35,8 @@ public class DateRange {
 
 	public DateRange(int beginYear, int endYear) {
 
-		GregorianCalendar calendar = new GregorianCalendar(
-				TimeZone.getTimeZone("UTC"));
-		calendar.set(Calendar.YEAR, beginYear);
-		calendar.set(Calendar.MONTH, Calendar.JANUARY);
-		calendar.set(Calendar.DAY_OF_MONTH, 1);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		beginDate = calendar.getTime();
-
-		calendar.set(Calendar.YEAR, endYear);
-		calendar.set(Calendar.MONTH, Calendar.DECEMBER);
-		calendar.set(Calendar.DAY_OF_MONTH, 31);
-		calendar.set(Calendar.HOUR_OF_DAY, 23);
-		calendar.set(Calendar.MINUTE, 59);
-		calendar.set(Calendar.SECOND, 59);
-		calendar.set(Calendar.MILLISECOND, 999);
-		endDate = calendar.getTime();
+		beginDate = edu.ict.rgeothes.utils.DateUtils.CreateDate(beginYear, Calendar.JANUARY, 1);
+		endDate = edu.ict.rgeothes.utils.DateUtils.CreateDate(endYear, Calendar.DECEMBER, 31);
 
 	}
 
@@ -96,17 +79,26 @@ public class DateRange {
 		}
 
 		final Date truncatedBeginDate = DateUtils
-				.truncate(beginDate, precision);
+				.round(beginDate, precision);
 
 		if (endDate != null) {
-			Date truncatedEndDate = DateUtils.truncate(endDate, precision);
+			Date truncatedEndDate = DateUtils.round(endDate, precision);
 
-			if (date.before(truncatedEndDate) && date.after(truncatedBeginDate)) {
+			Date roundedDate = DateUtils.round(date, precision);
+			
+			if (date.before(truncatedEndDate) 
+					&& date.after(truncatedBeginDate)) {
 				return true;
 			}
+			
+			if (roundedDate.equals(truncatedBeginDate) || 
+					roundedDate.equals(truncatedEndDate)) {
+				return true;
+			}
+		
 
 		} else {
-			final Date truncatedDate = DateUtils.truncate(date, precision);
+			final Date truncatedDate = DateUtils.round(date, precision);
 			if (truncatedBeginDate.compareTo(truncatedDate) == 0) {
 				return true;
 			}
@@ -131,7 +123,6 @@ public class DateRange {
 			return true;
 		}
 		
-		// TODO create unit test for DateRange.intersects
 		return false;
 	}
 

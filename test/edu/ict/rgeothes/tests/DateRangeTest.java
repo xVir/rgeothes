@@ -29,7 +29,7 @@ public class DateRangeTest {
 		assertFalse(range.isDateInRange(date4));
 	}
 	
-	
+	@Test
 	public void testIntresects(){
 		DateRange range1 = new DateRange(2000, 2010);
 		DateRange range2 = new DateRange(1996, 1997);
@@ -51,6 +51,37 @@ public class DateRangeTest {
 		assertFalse(range4.intersects(range1));
 		assertFalse(range2.intersects(range4));
 		assertFalse(range4.intersects(range2));
+	}
+	
+	@Test
+	public void testContains(){
+		DateRange range1 = new DateRange(2000, 2010);
+		assertTrue(range1.contains(range1));
+		
+		DateRange range2 = new DateRange(1996, 1997);
+		assertTrue(range2.contains(range2));
+		
+		assertFalse(range2.contains(range1));
+		assertFalse(range2.contains(range1));
+		
+		DateRange range3 = new DateRange(1996, 1996);
+		assertFalse(range1.contains(range3));
+		assertFalse(range3.contains(range1));
+		assertTrue(range2.contains(range3));
+		assertFalse(range3.contains(range2));
+		
+		DateRange range4 = new DateRange(1998, 2001);
+		assertFalse(range1.contains(range4));
+		assertFalse(range2.contains(range4));
+		assertFalse(range4.contains(range1));
+		assertFalse(range4.contains(range2));
+		
+		DateRange range5 = new DateRange(2001, 2005);
+		assertTrue(range1.contains(range5));
+		assertFalse(range5.contains(range1));
+		assertFalse(range2.contains(range5));
+		assertFalse(range5.contains(range2));
+		
 	}
 
 }
