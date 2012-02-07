@@ -18,26 +18,13 @@ public class DateRange {
 	}
 	
 	public DateRange(int year) {
-		GregorianCalendar calendar = new GregorianCalendar(
-				TimeZone.getTimeZone("UTC"));
-		calendar.set(Calendar.YEAR, year);
-		calendar.set(Calendar.MONTH, Calendar.JANUARY);
-		calendar.set(Calendar.DAY_OF_MONTH, 1);
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		
-		beginDate = calendar.getTime();
-		
+		beginDate = edu.ict.rgeothes.utils.DateUtils.CreateDate(year, Calendar.JANUARY, 1);
 		endDate = null;
 	}
 
 	public DateRange(int beginYear, int endYear) {
-
 		beginDate = edu.ict.rgeothes.utils.DateUtils.CreateDate(beginYear, Calendar.JANUARY, 1);
 		endDate = edu.ict.rgeothes.utils.DateUtils.CreateDate(endYear, Calendar.DECEMBER, 31);
-
 	}
 
 	public DateRange(Date beginDate, Date endDate) {
@@ -78,28 +65,28 @@ public class DateRange {
 			return false;
 		}
 
-		final Date truncatedBeginDate = DateUtils
+		final Date roundedBeginDate = DateUtils
 				.round(beginDate, precision);
 
 		if (endDate != null) {
-			Date truncatedEndDate = DateUtils.round(endDate, precision);
+			Date roundedEndDate = DateUtils.round(endDate, precision);
 
 			Date roundedDate = DateUtils.round(date, precision);
 			
-			if (date.before(truncatedEndDate) 
-					&& date.after(truncatedBeginDate)) {
+			if (date.before(roundedEndDate) 
+					&& date.after(roundedBeginDate)) {
 				return true;
 			}
 			
-			if (roundedDate.equals(truncatedBeginDate) || 
-					roundedDate.equals(truncatedEndDate)) {
+			if (roundedDate.equals(roundedBeginDate) || 
+					roundedDate.equals(roundedEndDate)) {
 				return true;
 			}
 		
 
 		} else {
 			final Date truncatedDate = DateUtils.round(date, precision);
-			if (truncatedBeginDate.compareTo(truncatedDate) == 0) {
+			if (roundedBeginDate.compareTo(truncatedDate) == 0) {
 				return true;
 			}
 		}
