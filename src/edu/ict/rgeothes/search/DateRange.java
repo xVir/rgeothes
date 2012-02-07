@@ -115,6 +115,10 @@ public class DateRange {
 	 */
 	public boolean intersects(DateRange dateRange) {
 		
+		if(contains(dateRange) || dateRange.contains(this)){
+			return true;
+		}
+		
 		if (dateRange.isDateInRange(beginDate) && !dateRange.isDateInRange(endDate)) {
 			return true;
 		}
