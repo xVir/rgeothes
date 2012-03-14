@@ -63,6 +63,8 @@ Map<String, Record> recordsMap = new HashMap<>();
 								previousReference.getRecordTo().getPrimaryName().getName()),
 						date);
 				
+				changeNameDocument.setCreationDate(date);
+				
 				previousReference.setDocument(changeNameDocument);
 				
 				record.setPrevious(previousReference);

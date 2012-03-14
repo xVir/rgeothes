@@ -55,6 +55,12 @@ public class NskReestrParser {
 
 			List<Record> records = parser.readRecordsFormFile(inputFilePath);
 
+			PrintStream namesOutputStream = new PrintStream(new FileOutputStream("nsk_names.txt")); 
+			for (Record record : records) {
+				namesOutputStream.println(record.getPrimaryName().getName());
+			}
+			namesOutputStream.close();
+			
 			Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 			System.out.println(gson.toJson(records.get(2)));

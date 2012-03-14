@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,7 +33,7 @@ import edu.ict.rgeothes.tools.loaders.KzLoader;
 public class KazImporter {
 
 	
-	private static final boolean ToDatabase = false;
+	private static final boolean ToDatabase = true;
 	private static final boolean ToXml = true;
 
 	/**
@@ -76,6 +77,8 @@ public class KazImporter {
 
 			connection.setAutoCommit(true);
 			
+			clearThesaurus(connection);
+			
 			new RecordDao(connection).addRecords(result);
 	
 		}
@@ -101,6 +104,12 @@ public class KazImporter {
 			FileUtils.writeStringToFile(outputFile, serialized, "Unicode");
 			
 		}
+		
+	}
+
+	private static void clearThesaurus(Connection connection) throws SQLException {
+		 Statement statement = connection.createStatement();
+		 statement.execute("TRUNCATE thesaurus_document CASCADE; TRUNCATE thesaurus_record CASCADE;");
 		
 	}
 
