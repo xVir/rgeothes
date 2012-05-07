@@ -1,0 +1,2 @@
+--select search_by_name('Новосибирская');
+--select search_by_name(term_name := NULL);
