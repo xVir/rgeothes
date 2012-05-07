@@ -5,45 +5,45 @@
     <xs:sequence>
       <xs:element name="belongTo" type="recordReference" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="contains" type="recordReference" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="locations" type="location" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-      <xs:element name="names" type="name" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="locations" type="location"  maxOccurs="unbounded"/>
+      <xs:element name="names" type="name" maxOccurs="unbounded"/>
       <xs:element name="previous" type="recordReference" minOccurs="0"/>
-      <xs:element name="primaryName" type="name" minOccurs="0"/>
-      <xs:element name="qualifier" type="xs:string" minOccurs="0"/>
+      <xs:element name="primaryName" type="name" />
+      <xs:element name="qualifier" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="recordReference">
     <xs:sequence>
-      <xs:element name="document" type="document" minOccurs="0"/>
-      <xs:element name="recordFromQualifier" type="xs:string" minOccurs="0"/>
-      <xs:element name="recordToQualifier" type="xs:string" minOccurs="0"/>
+      <xs:element name="document" type="document" />
+      <xs:element name="recordFromQualifier" type="xs:string" />
+      <xs:element name="recordToQualifier" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="document">
     <xs:sequence>
-      <xs:element name="creationDate" type="xs:dateTime" minOccurs="0"/>
-      <xs:element name="date" type="xs:dateTime" minOccurs="0"/>
-      <xs:element name="description" type="xs:string" minOccurs="0"/>
-      <xs:element name="uri" type="xs:string" minOccurs="0"/>
+      <xs:element name="creationDate" type="xs:dateTime" />
+      <xs:element name="date" type="xs:dateTime" />
+      <xs:element name="description" type="xs:string" />
+      <xs:element name="uri" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="location" abstract="true">
     <xs:sequence>
-      <xs:element name="beginDocument" type="document" minOccurs="0"/>
-      <xs:element name="endDocument" type="document" minOccurs="0"/>
+      <xs:element name="beginDocument" type="document" />
+      <xs:element name="endDocument" type="document" />
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="name">
     <xs:sequence>
-      <xs:element name="beginDocument" type="document" minOccurs="0"/>
+      <xs:element name="beginDocument" type="document" />
       <xs:element name="endDocument" type="document" minOccurs="0"/>
-      <xs:element name="language" type="xs:string" minOccurs="0"/>
-      <xs:element name="name" type="xs:string" minOccurs="0"/>
-      <xs:element name="type" type="xs:string" minOccurs="0"/>
+      <xs:element name="language" type="xs:string" />
+      <xs:element name="name" type="xs:string" />
+      <xs:element name="type" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
 
@@ -62,8 +62,8 @@
     <xs:complexContent>
       <xs:extension base="location">
         <xs:sequence>
-          <xs:element name="point1" type="point" minOccurs="0"/>
-          <xs:element name="point2" type="point" minOccurs="0"/>
+          <xs:element name="point1" type="point" />
+          <xs:element name="point2" type="point" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
