@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Default Connection</comment>
+<entry key="autoCommit">true</entry>
+<entry key="customJdbcConnectString">jdbc:postgresql://localhost:5432/rgeothes</entry>
+<entry key="displayName">postgres@localhost/rgeothes</entry>
+<entry key="db">rgeothes</entry>
+<entry key="port">5432</entry>
+<entry key="host">localhost</entry>
+<entry key="userName">postgres</entry>
+<entry key="adapterId">postgresql</entry>
+</properties>
