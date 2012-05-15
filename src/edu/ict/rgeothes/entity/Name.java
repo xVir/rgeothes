@@ -61,7 +61,7 @@ public class Name implements Serializable{
 		this.type = type;
 		this.language = language;
 		
-		this.beginDocument = Document.FUTURE;
+		this.beginDocument = Document.PAST;
 		this.endDocument = Document.FUTURE;
 	}
 

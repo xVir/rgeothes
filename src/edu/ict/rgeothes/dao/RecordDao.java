@@ -110,7 +110,7 @@ public class RecordDao {
 	}
 
 	private static String INSERT_POINT_FORMAT = "INSERT INTO "
-			+ "thesaurus_location("
+			+ "location("
 			+ "qualifier,  begin_document_id, end_document_id, location_type, "
 			+ "point_simple) " + "VALUES ('%s', %s, %s, '%s', %s)";
 
@@ -121,13 +121,13 @@ public class RecordDao {
 						loc.getLongitude()));
 	}
 
-	private static String INSERT_RECORD_FORMAT = "INSERT INTO thesaurus_record(qualifier)  VALUES ('%s')";
+	private static String INSERT_RECORD_FORMAT = "INSERT INTO record(qualifier)  VALUES ('%s')";
 
 	private String createSqlFromRecord(Record rec) {
 		return String.format(INSERT_RECORD_FORMAT, rec.getQualifier());
 	}
 
-	private static String INSERT_DOCUMENT_FORMAT = "INSERT INTO thesaurus_document(id, uri, description, document_date, creation_date)"
+	private static String INSERT_DOCUMENT_FORMAT = "INSERT INTO document(id, uri, description, document_date, creation_date)"
 			+ "   VALUES (%s, '%s', '%s', %s, %s)";
 
 	private String createSqlFromDocument(Document document) {
@@ -144,7 +144,7 @@ public class RecordDao {
 		return String.format("'%s'", string);
 	}
 
-	private static String INSERT_NAME_FORMAT = "INSERT INTO thesaurus_name( name, type, lang, qualifier, begin_document_id, end_document_id) "
+	private static String INSERT_NAME_FORMAT = "INSERT INTO name( name, type, lang, qualifier, begin_document_id, end_document_id) "
 			+ "  VALUES ('%s', '%s', '%s', '%s',%s , %s)";
 
 	private String createSqlFromName(Record rec, Name name) {

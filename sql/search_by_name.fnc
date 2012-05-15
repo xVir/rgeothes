@@ -61,6 +61,7 @@ BEGIN
  	RETURN empty_result;
  END IF;	
  
+ -- get child records
  
 
  -- create xml text with identifiers

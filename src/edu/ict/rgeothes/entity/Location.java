@@ -58,7 +58,7 @@ public abstract class Location implements Serializable {
 	}
 	
 	public Location() {
-		beginDocument = Document.FUTURE;
+		beginDocument = Document.PAST;
 		endDocument = Document.FUTURE;
 		
 	}

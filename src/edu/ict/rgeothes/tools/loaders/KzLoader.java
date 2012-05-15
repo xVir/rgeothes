@@ -95,10 +95,8 @@ public class KzLoader implements IRecordsLoader {
 	private Record getExistsRecord(List<Record> records,
 			String previousRecordName) throws InvalidInputException {
 		for(Record rec:records){
-			for(Name name : rec.getNames()){
-				if (name.getName().equals(previousRecordName)) {
-					return rec;
-				}
+			if (rec.hasName(previousRecordName)) {
+				return rec;
 			}
 		}
 		throw new InvalidInputException();

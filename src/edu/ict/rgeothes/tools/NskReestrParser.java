@@ -36,7 +36,7 @@ public class NskReestrParser {
 
 	private static String[] documentBeginings = { "Снят с", "Изменился род", };
 
-	private Map<UUID, Record> districts = new HashMap<UUID, Record>();
+	private List<Record> districts = new ArrayList<Record>();
 
 	/**
 	 * @param args
@@ -44,28 +44,13 @@ public class NskReestrParser {
 	public static void main(String[] args) {
 
 		try {
-			PrintStream outStream = new PrintStream(
-			new FileOutputStream(new File("sysout.txt")));
 
-			System.setOut(outStream);
-			
 			String inputFilePath = "input/novosib.txt";
-
-			NskReestrParser parser = new NskReestrParser();
-
-			List<Record> records = parser.readRecordsFormFile(inputFilePath);
-
-			PrintStream namesOutputStream = new PrintStream(new FileOutputStream("nsk_names.txt")); 
-			for (Record record : records) {
-				namesOutputStream.println(record.getNames().get(0).getName());
-			}
-			namesOutputStream.close();
 			
-			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			List<Record> records = readRecordsFromFile(inputFilePath);
 
-			System.out.println(gson.toJson(records.get(2)));
-			System.out.println();
-			
+			printNamesToFile(records);
+			printRecordsToJson(records);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -73,61 +58,90 @@ public class NskReestrParser {
 
 	}
 
+	private static List<Record> readRecordsFromFile(String inputFilePath) {
+		NskReestrParser parser = new NskReestrParser();
+
+		List<Record> records = parser.readRecordsFormFile(inputFilePath);
+		return records;
+	}
+
+	private static void printRecordsToJson(List<Record> records) throws FileNotFoundException {
+		
+		PrintStream outStream = new PrintStream(new FileOutputStream(
+				new File("sysout.txt")));
+
+		System.setOut(outStream);
+		
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+		for (Record record : records) {
+			System.out.println(gson.toJson(record));
+			System.out.println();	
+		}
+	}
+
+	private static void printNamesToFile(List<Record> records)
+			throws FileNotFoundException {
+		PrintStream namesOutputStream = new PrintStream(
+				new FileOutputStream("nsk_names.txt"));
+		for (Record record : records) {
+			namesOutputStream.println(record.getNames().get(0).getName());
+		}
+		namesOutputStream.close();
+	}
+
 	public List<Record> readRecordsFormFile(String inputFilePath) {
 		try {
 
-			Record russiaRecord = new Record();
-			russiaRecord.setPrimaryParent(Record.ROOT_RECORD,
-					Document.PAST);
-			russiaRecord.addName(new Name("Российская Федерация",
-					"государство", RU));
-
-			Record parentRecord = new Record();
-			parentRecord.setPrimaryParent(russiaRecord,
-					Document.PAST);
-			parentRecord.addName(new Name("Новосибирская область",
-					"область", RU));
+			Record russiaRecord = createRussiaRecord();
+			Record novosibirskStateRecord = createNovosibirskStateRecord(russiaRecord);
 
 			List<String> fileContent = FileUtils.readLines(new File(
 					inputFilePath));
 
 			List<Record> records = new ArrayList<Record>();
 
-			if (fileContent.size() > 0) {
-				System.out.println("Lines to proceed: " + fileContent.size());
-
-				int startIndex;
-				int endIndex;
-
-				startIndex = 0;
-
-				while (startIndex < fileContent.size() - 1) {
-					endIndex = getNextRecordIndex(fileContent, startIndex);
-
-					try {
-						Record record = getRecordFromLines(
-								fileContent.subList(startIndex, endIndex),
-								parentRecord);
-
-						System.out.println(record);
-
-						records.add(record);
-					} catch (Exception ex) {
-						System.out.println("error: " + ex.getMessage());
-					}
-
-					startIndex = endIndex;
-				}
-
-				System.out.println("Finished!");
-
-				System.out.println(records.size() + " records processed");
-				System.out.println(records.size() / 867.0);
-			} else {
+			if (fileContent.size() <= 0) {
 				System.out.println("Nothing to do");
+				return records;
 			}
 
-			// writer.close();
+			System.out.println("Lines to proceed: " + fileContent.size());
+
+			records.add(russiaRecord);
+			records.add(novosibirskStateRecord);
+			
+			int startIndex;
+			int endIndex;
+
+			startIndex = 0;
+
+			List<Record> parsedRecords = new ArrayList<Record>();
+			while (startIndex < fileContent.size() - 1) {
+				endIndex = getNextRecordIndex(fileContent, startIndex);
+
+				try {
+					Record record = createRecordFromLines(
+							fileContent.subList(startIndex, endIndex),
+							novosibirskStateRecord);
+
+					System.out.println(record);
+
+					parsedRecords.add(record);
+				} catch (Exception ex) {
+					System.out.println("error: " + ex.getMessage());
+				}
+
+				startIndex = endIndex;
+			}
+
+			records.addAll(districts);
+			records.addAll(parsedRecords);
+			
+			System.out.println("Finished!");
+
+			System.out.println(records.size() + " records processed");
+			System.out.println(records.size() / 867.0);
 
 			return records;
 
@@ -136,6 +150,21 @@ public class NskReestrParser {
 		}
 
 		return null;
+	}
+
+	private Record createNovosibirskStateRecord(Record russiaRecord) {
+		Record parentRecord = new Record();
+		parentRecord.setPrimaryParent(russiaRecord, Document.PAST);
+		parentRecord.addName(new Name("Новосибирская область", "область", RU));
+		return parentRecord;
+	}
+
+	private Record createRussiaRecord() {
+		Record russiaRecord = new Record();
+		russiaRecord.setPrimaryParent(Record.ROOT_RECORD, Document.PAST);
+		russiaRecord
+				.addName(new Name("Российская Федерация", "государство", RU));
+		return russiaRecord;
 	}
 
 	private int getNextRecordIndex(List<String> fileContent, int startIndex)
@@ -173,9 +202,9 @@ public class NskReestrParser {
 		return false;
 	}
 
-	private Record getRecordFromLines(List<String> lines, Record parentRecord) {
+	private Record createRecordFromLines(List<String> lines, Record parentRecord) {
 
-		Record result = new Record();
+		Record resultRecord = new Record();
 
 		StrTokenizer firstLine = new StrTokenizer(lines.get(0), TAB);
 
@@ -214,43 +243,59 @@ public class NskReestrParser {
 
 		Record districtRecord = getDistrictRecord(parentRecord, district);
 
-		result.setPrimaryParent(districtRecord, Document.FUTURE);
+		resultRecord.setPrimaryParent(districtRecord, Document.PAST);
 
 		Name resultName = new Name(name, placeType, RU);
 
+		Document retiredDocument=null;
 		if (documentDescription.toString()
 				.contains(RETIRED_NAME_DOCUMENT_DESCR)) {
-
-			String docDescr = documentDescription.toString();
-
-			String documentDateString = StringUtils.substringBetween(docDescr,
-					RETIRED_NAME_DOCUMENT_DESCR, " ");
-
-			Date documentDate = null;
-			try {
-				documentDate = new SimpleDateFormat("dd/MM/yyyy")
-						.parse(documentDateString);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-
-			String shortDocumentDescription = StringUtils.substringAfter(
-					docDescr, documentDateString).trim();
-
-			resultName.setEndDocument(new Document(shortDocumentDescription,
-					documentDate));
+			retiredDocument = createRetireDocument(documentDescription);
 		}
 
-		result.addName(resultName);
+		if (retiredDocument != null) {
+			resultName.setEndDocument(retiredDocument);
+		}
+		
+		resultRecord.addName(resultName);
 
-		result.addLocation(new Point(latitudeValue, longitudeValue));
+		resultRecord.addLocation(new Point(latitudeValue, longitudeValue));
 
 		for (String anotherName : anotherNames) {
-			result.addName(new Name(anotherName, placeType, RU));
+			final Name additionalName = new Name(anotherName, placeType, RU);
+			
+			if (retiredDocument!=null) {
+				additionalName.setEndDocument(retiredDocument);	
+			}
+			
+			resultRecord.addName(additionalName);
 		}
 
-		return result;
+		return resultRecord;
 
+	}
+
+	private Document createRetireDocument(StringBuilder documentDescription) {
+		Document retiredDocument;
+		String docDescr = documentDescription.toString();
+
+		String documentDateString = StringUtils.substringBetween(docDescr,
+				RETIRED_NAME_DOCUMENT_DESCR, " ");
+
+		Date documentDate = null;
+		try {
+			documentDate = new SimpleDateFormat("dd/MM/yyyy")
+					.parse(documentDateString);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		String shortDocumentDescription = StringUtils.substringAfter(
+				docDescr, documentDateString).trim();
+
+		retiredDocument = new Document(shortDocumentDescription,
+				documentDate);
+		return retiredDocument;
 	}
 
 	private void fillNamesAndDocDescription(int lineNumber, List<String> lines,
@@ -323,18 +368,26 @@ public class NskReestrParser {
 
 	}
 
-	private Record getDistrictRecord(Record parentRecord, String district) {
-		Record districtRecord = new Record();
-		districtRecord
-				.setPrimaryParent(parentRecord, Document.PAST);
-		districtRecord.addName(new Name(district, "район", RU));
+	private Record getDistrictRecord(Record parentRecord, String districtName) {
 
-		if (!districts.containsKey(districtRecord.getQualifier())) {
-			districts.put(districtRecord.getQualifier(), districtRecord);
-		} else {
-			districtRecord = districts.get(districtRecord.getQualifier());
+		Record existsDistrict = searchDistrict(districtName);
+		if (existsDistrict == null) {
+			existsDistrict = new Record();
+			existsDistrict.setPrimaryParent(parentRecord, Document.PAST);
+			existsDistrict.addName(new Name(districtName, "район", RU));
+			districts.add(existsDistrict);
 		}
-		return districtRecord;
+		return existsDistrict;
+		
+	}
+
+	private Record searchDistrict(String districtName) {
+		for(Record district : districts){
+			if(district.hasName(districtName)){
+				return district;
+			}
+		}
+		return null;
 	}
 
 	private static double longitudeFromString(String longitudeString) {
