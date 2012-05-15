@@ -6,6 +6,8 @@ DECLARE
  result text = '';
  main_record uuid;
  empty_result text = '';
+ childs_list uuid[] := '{}';
+ i int;
 BEGIN
 
  -- checking input parameters
@@ -15,11 +17,11 @@ BEGIN
  END IF;
 
  IF term_name_begin ISNULL THEN
-  term_name_begin := -infinity;
+  term_name_begin := '-infinity';
  END IF;
 
  IF term_name_end ISNULL THEN
-  term_name_end := infinity;
+  term_name_end := 'infinity';
  END IF;
 
  -- first get identifiers of objects
@@ -28,10 +30,10 @@ BEGIN
 
  IF term_type <> NULL THEN
 
-  SELECT rec.qualifier FROM thesaurus_record rec
-   JOIN thesaurus_name rec_name ON rec.qualifier=rec_name.qualifier
-   JOIN thesaurus_document doc_begin ON rec_name.begin_document_id = doc_begin.id
-   JOIN thesaurus_document doc_end ON rec_name.end_document_id = doc_end.id
+  SELECT rec.qualifier FROM record rec
+   LEFT OUTER JOIN name rec_name ON rec.qualifier=rec_name.qualifier
+   LEFT OUTER JOIN document doc_begin ON rec_name.begin_document_id = doc_begin.id
+   LEFT OUTER JOIN document doc_end ON rec_name.end_document_id = doc_end.id
   INTO main_record
   WHERE rec_name.name = term_name
    AND rec_name.lang = term_lang
@@ -42,10 +44,10 @@ BEGIN
 
  ELSE
 
-  SELECT rec.qualifier FROM thesaurus_record rec
-   JOIN thesaurus_name rec_name ON rec.qualifier=rec_name.qualifier
-   JOIN thesaurus_document doc_begin ON rec_name.begin_document_id = doc_begin.id
-   JOIN thesaurus_document doc_end ON rec_name.end_document_id = doc_end.id
+  SELECT rec.qualifier FROM record rec
+   LEFT OUTER JOIN name rec_name ON rec.qualifier=rec_name.qualifier
+   LEFT OUTER JOIN document doc_begin ON rec_name.begin_document_id = doc_begin.id
+   LEFT OUTER JOIN document doc_end ON rec_name.end_document_id = doc_end.id
   INTO main_record
   WHERE rec_name.name=term_name
    AND rec_name.lang=term_lang
@@ -61,10 +63,19 @@ BEGIN
  	RETURN empty_result;
  END IF;	
  
- -- get child records
  
+ -- get child records
+ childs_list := get_object_childs(main_record,term_name_begin,term_name_end);
+ 
+ RAISE DEBUG '%',childs_list;
 
  -- create xml text with identifiers
+
+FOR i IN array_lower(childs_list, 1) .. array_upper(childs_list, 1)
+  LOOP
+    result := childs_list[i] + ' ';
+  END LOOP;
+ 
 
  RETURN result;
 END;

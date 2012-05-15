@@ -22,8 +22,9 @@ result_list:= ARRAY(  SELECT rec.qualifier FROM record rec
 	LEFT OUTER JOIN document begin_doc ON r_ref.begin_document_id = begin_doc.id
 	LEFT OUTER JOIN document end_doc ON r_ref.end_document_id = end_doc.id
  -- INTO result_list
-  WHERE parent_record.qualifier=object_qualifier
-  	AND begin_doc.document_date <= date_begin);
+  WHERE parent_record.qualifier=object_qualifier	);
+  
+  --AND begin_doc.document_date <= date_begin
 
  IF result_list <> NULL THEN
  	
