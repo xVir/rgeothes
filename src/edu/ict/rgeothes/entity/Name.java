@@ -61,8 +61,8 @@ public class Name implements Serializable{
 		this.type = type;
 		this.language = language;
 		
-		this.beginDocument = Document.UNKNOWN_DOCUMENT;
-		this.endDocument = Document.UNKNOWN_DOCUMENT;
+		this.beginDocument = Document.FUTURE;
+		this.endDocument = Document.FUTURE;
 	}
 
 	public String getName() {
@@ -151,7 +151,7 @@ public class Name implements Serializable{
 	public String getLifetime(){
 		StringBuilder builder = new StringBuilder();
 		
-		if (beginDocument != null && beginDocument != Document.UNKNOWN_DOCUMENT) {
+		if (beginDocument != null && beginDocument != Document.FUTURE) {
 			builder.append(lifetimeFormat.format(beginDocument.getDate()));
 		}
 		else {
@@ -160,7 +160,7 @@ public class Name implements Serializable{
 		
 		builder.append("-");
 		
-		if (endDocument != null && endDocument != Document.UNKNOWN_DOCUMENT) {
+		if (endDocument != null && endDocument != Document.FUTURE) {
 			builder.append(lifetimeFormat.format(endDocument.getDate()));
 		}
 		else{

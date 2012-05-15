@@ -28,18 +28,18 @@ import edu.ict.rgeothes.entity.Point;
 import edu.ict.rgeothes.entity.Record;
 import edu.ict.rgeothes.entity.RecordReference;
 import edu.ict.rgeothes.entity.Rectangle;
+import edu.ict.rgeothes.exceptions.InvalidInputException;
 import edu.ict.rgeothes.tools.loaders.KzLoader;
 
 public class KazImporter {
 
-	
 	private static final boolean ToDatabase = true;
 	private static final boolean ToXml = true;
 
 	/**
 	 * @param args
 	 * @throws IOException
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public static void main(String[] args) throws IOException, SQLException {
 
@@ -50,10 +50,10 @@ public class KazImporter {
 
 		String fileName = args[0];
 		System.out.println("Processing " + fileName);
-		
+
 		File inputFile = new File(fileName);
 		List<String> inputLines = FileUtils.readLines(inputFile, "Unicode");
-		
+
 		if (inputLines.size() <= 0) {
 			System.out.println("No data for processing");
 			return;
@@ -65,28 +65,28 @@ public class KazImporter {
 			System.out.println("No data for processing");
 			return;
 		}
-		
+
 		List<Record> result = parseRecords(inputLines);
-		
-		//trying to save 
-		
+
+		// trying to save
+
 		if (ToDatabase) {
 			Connection connection = DriverManager.getConnection(
 					"jdbc:postgresql://127.0.0.1:5432/rgeothes", "postgres",
 					"postgres");
 
 			connection.setAutoCommit(true);
-			
+
 			clearThesaurus(connection);
-			
+
 			new RecordDao(connection).addRecords(result);
-	
+
 		}
 
 		if (ToXml) {
-			
+
 			XStream xstream = new XStream(new DomDriver());
-			
+
 			xstream.alias("record", Record.class);
 			xstream.alias("name", Name.class);
 			xstream.alias("document", Document.class);
@@ -94,29 +94,35 @@ public class KazImporter {
 			xstream.alias("location", Location.class);
 			xstream.alias("point", Point.class);
 			xstream.alias("rectangle", Rectangle.class);
-			
+
 			xstream.setMode(XStream.NO_REFERENCES);
-			
+
 			String serialized = xstream.toXML(result);
-			
+
 			File outputFile = new File("kz.xml");
-		
+
 			FileUtils.writeStringToFile(outputFile, serialized, "Unicode");
-			
+
 		}
-		
+
 	}
 
-	private static void clearThesaurus(Connection connection) throws SQLException {
-		 Statement statement = connection.createStatement();
-		 statement.execute("TRUNCATE thesaurus_document CASCADE; TRUNCATE thesaurus_record CASCADE;");
-		
+	private static void clearThesaurus(Connection connection)
+			throws SQLException {
+		Statement statement = connection.createStatement();
+		statement
+				.execute("TRUNCATE thesaurus_document CASCADE; TRUNCATE thesaurus_record CASCADE;");
+
 	}
 
 	private static List<Record> parseRecords(List<String> inputLines) {
-		return new KzLoader().parseRecords(inputLines);
+		try {
+			final List<Record> parsedRecords = new KzLoader()
+					.parseRecords(inputLines);
+			return parsedRecords;
+		} catch (InvalidInputException e) {
+			return null;
+		}
 	}
-
-	
 
 }

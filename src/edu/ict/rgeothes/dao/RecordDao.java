@@ -56,7 +56,7 @@ public class RecordDao {
 	}
 
 	private long getNextDocumentId() {
-		String query = "SELECT  NEXTVAL('thesaurus_document_id_seq')";
+		String query = "SELECT  NEXTVAL('document_id_seq')";
 
 		try {
 			Statement statement = connection.createStatement();
@@ -78,12 +78,6 @@ public class RecordDao {
 		List<String> result = new ArrayList<>();
 
 		result.add(createSqlFromRecord(rec));
-
-		if (rec.getPrevious()!=null) {
-			result.add(createSqlFromDocument(rec.getPrevious().getDocument()));
-			result.add(createSqlFromReference(rec.getPrevious()));	
-		}
-		
 
 		for (Name n : rec.getNames()) {
 

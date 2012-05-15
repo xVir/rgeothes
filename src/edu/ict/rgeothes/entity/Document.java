@@ -28,14 +28,20 @@ import edu.ict.rgeothes.utils.DateUtils;
 @Table(name = "thesaurus_document")
 public class Document implements Serializable {
 
-	public static final Document UNKNOWN_DOCUMENT = new Document(
-			"unknown document");
+	public static final Document FUTURE = new Document(
+			"future");
 
+	public static final Document PAST = new Document("past");
+	
 	static {
-		UNKNOWN_DOCUMENT.setId(0);
+		FUTURE.setId(1);
 
-		UNKNOWN_DOCUMENT.setDate( DateUtils.CreateDate(3000, Calendar.JANUARY, 1));
-		UNKNOWN_DOCUMENT.setCreationDate(DateUtils.CreateDate(3000, Calendar.JANUARY, 1));
+		FUTURE.setDate( DateUtils.CreateDate(3000, Calendar.JANUARY, 1));
+		FUTURE.setCreationDate(DateUtils.CreateDate(3000, Calendar.JANUARY, 1));
+		
+		PAST.setId(0);
+		PAST.setDate(DateUtils.CreateDate(1, 1, 1));
+		PAST.setCreationDate(DateUtils.CreateDate(1, 1, 1));
 	}
 
 	public Document() {

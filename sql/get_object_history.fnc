@@ -18,7 +18,6 @@ BEGIN
 
  LOOP
 
-
 	 -- getting back neighbor
 	 SELECT r_ref.record_from_qualifier FROM
 	 thesaurus_record rec

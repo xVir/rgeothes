@@ -97,7 +97,7 @@ public class Thesaurus {
 
 			for (Record record : recordsByName) {
 				recordsToFilter.add(record);
-				recordsToFilter.addAll(getAllLifecycleRecords(record));
+				
 			}
 			
 			//TODO filter by date range
@@ -110,53 +110,6 @@ public class Thesaurus {
 		}
 
 		return relevantRecords;
-	}
-
-	private Collection<? extends Record> getAllLifecycleRecords(Record record) {
-		List<Record> relevantRecords = new ArrayList<Record>();
-		
-		if (record.getPrevious() != null) {
-			relevantRecords.addAll(getAllPastRecords(record));
-		}
-		
-		relevantRecords.addAll(getAllFutureRecords(record));
-		
-		return relevantRecords;
-	}
-
-	private Collection<? extends Record> getAllFutureRecords(Record record) {
-		List<Record> futureRecords = new ArrayList<>();
-		
-		for (Record thesaurusRecord : records.values()) {
-			if (thesaurusRecord.getPrevious() != null) {
-				if (thesaurusRecord.getPrevious().getRecordFromQualifier()
-						.equals(record.getQualifier())) {
-					
-					futureRecords.add(thesaurusRecord);
-					
-					futureRecords.addAll(getAllFutureRecords(thesaurusRecord));
-				}
-			}
-		}
-		
-		return futureRecords;
-	}
-
-	private Collection<? extends Record> getAllPastRecords(Record record) {
-		List<Record> pastRecords = new ArrayList<>();
-		
-		 UUID recordFromQualifier = record.getPrevious().getRecordFromQualifier();
-		 
-		 Record recordFrom = records.get(recordFromQualifier);
-		 if (recordFrom != null) {
-			pastRecords.add(recordFrom);
-			
-			if (recordFrom.getPrevious()!= null) {
-				pastRecords.addAll(getAllPastRecords(recordFrom));
-			}
-		}
-		
-		return pastRecords;
 	}
 
 	private List<Record> searchByName(String name) {

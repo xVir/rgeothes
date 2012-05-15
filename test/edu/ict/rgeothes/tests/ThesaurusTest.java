@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import edu.ict.rgeothes.Thesaurus;
 import edu.ict.rgeothes.entity.Record;
+import edu.ict.rgeothes.exceptions.InvalidInputException;
 import edu.ict.rgeothes.search.DateRange;
 import edu.ict.rgeothes.search.SearchQuery;
 import edu.ict.rgeothes.tools.NskReestrParser;
@@ -27,7 +28,7 @@ public class ThesaurusTest {
 	}
 	
 	@Test
-	public void testSimpleSearch() throws IOException{
+	public void testSimpleSearch() throws IOException, InvalidInputException{
 			Thesaurus thesaurus = loadTestRecords();
 
 			SearchQuery query = new SearchQuery();
@@ -35,7 +36,6 @@ public class ThesaurusTest {
 			List<Record> records = thesaurus.search(query);
 			assertTrue(records.size() >= 1);	
 			assertEquals("Алматы", getPrimaryName(records.get(0)));
-			//TODO more assertions
 			
 			query = new SearchQuery();
 			query.setName("Алматы");
@@ -43,7 +43,6 @@ public class ThesaurusTest {
 			records = thesaurus.search(query);
 			assertTrue(records.size() >= 1);	
 			assertEquals("Верный", getPrimaryName(records.get(0)));
-			//TODO more assertions
 			
 			query = new SearchQuery();
 			query.setName("Алматы");
@@ -51,15 +50,25 @@ public class ThesaurusTest {
 			records = thesaurus.search(query);
 			assertTrue(records.size() >= 1);
 			assertEquals("Алма-Ата", getPrimaryName(records.get(0)));
-			//TODO more assertions
+	}
+	
+	@Test
+	public void testLoadingObjects() throws IOException, InvalidInputException{
+		String fileName = "tests_input/Almata.txt";
+		
+		File inputFile = new File(fileName);
+		List<String> inputLines = FileUtils.readLines(inputFile, "Unicode");
+		List<Record> records = new KzLoader().parseRecords(inputLines);
+		
+		assertEquals(1, records.size());
 	}
 
 	private String getPrimaryName(Record record) {
-		return record.getPrimaryName().getName();
+		return record.getNames().get(0).getName();
 	}
 
-	private Thesaurus loadTestRecords() throws IOException {
-		String fileName = "tests_input/Алмата.txt";
+	private Thesaurus loadTestRecords() throws IOException, InvalidInputException {
+		String fileName = "tests_input/Almata.txt";
 		
 		File inputFile = new File(fileName);
 		List<String> inputLines = FileUtils.readLines(inputFile, "Unicode");

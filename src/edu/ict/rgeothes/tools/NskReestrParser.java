@@ -57,7 +57,7 @@ public class NskReestrParser {
 
 			PrintStream namesOutputStream = new PrintStream(new FileOutputStream("nsk_names.txt")); 
 			for (Record record : records) {
-				namesOutputStream.println(record.getPrimaryName().getName());
+				namesOutputStream.println(record.getNames().get(0).getName());
 			}
 			namesOutputStream.close();
 			
@@ -78,21 +78,18 @@ public class NskReestrParser {
 
 			Record russiaRecord = new Record();
 			russiaRecord.setPrimaryParent(Record.ROOT_RECORD,
-					Document.UNKNOWN_DOCUMENT);
-			russiaRecord.setPrimaryName(new Name("Российская Федерация",
+					Document.PAST);
+			russiaRecord.addName(new Name("Российская Федерация",
 					"государство", RU));
 
 			Record parentRecord = new Record();
 			parentRecord.setPrimaryParent(russiaRecord,
-					Document.UNKNOWN_DOCUMENT);
-			parentRecord.setPrimaryName(new Name("Новосибирская область",
+					Document.PAST);
+			parentRecord.addName(new Name("Новосибирская область",
 					"область", RU));
 
 			List<String> fileContent = FileUtils.readLines(new File(
 					inputFilePath));
-
-			// FileWriter fstream = new FileWriter("out.txt");
-			// BufferedWriter writer = new BufferedWriter(fstream);
 
 			List<Record> records = new ArrayList<Record>();
 
@@ -217,7 +214,7 @@ public class NskReestrParser {
 
 		Record districtRecord = getDistrictRecord(parentRecord, district);
 
-		result.setPrimaryParent(districtRecord, Document.UNKNOWN_DOCUMENT);
+		result.setPrimaryParent(districtRecord, Document.FUTURE);
 
 		Name resultName = new Name(name, placeType, RU);
 
@@ -244,7 +241,7 @@ public class NskReestrParser {
 					documentDate));
 		}
 
-		result.setPrimaryName(resultName);
+		result.addName(resultName);
 
 		result.addLocation(new Point(latitudeValue, longitudeValue));
 
@@ -329,8 +326,8 @@ public class NskReestrParser {
 	private Record getDistrictRecord(Record parentRecord, String district) {
 		Record districtRecord = new Record();
 		districtRecord
-				.setPrimaryParent(parentRecord, Document.UNKNOWN_DOCUMENT);
-		districtRecord.setPrimaryName(new Name(district, "район", RU));
+				.setPrimaryParent(parentRecord, Document.PAST);
+		districtRecord.addName(new Name(district, "район", RU));
 
 		if (!districts.containsKey(districtRecord.getQualifier())) {
 			districts.put(districtRecord.getQualifier(), districtRecord);

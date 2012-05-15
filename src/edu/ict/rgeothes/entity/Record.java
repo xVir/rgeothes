@@ -2,7 +2,6 @@ package edu.ict.rgeothes.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,15 +25,17 @@ import edu.ict.rgeothes.search.DateRange;
 public class Record implements Serializable {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7685385488885134162L;
+
+	/**
 	 * Record, which is the root of thesaurus (let's assume its "Earth")
 	 */
 	public static final Record ROOT_RECORD = new Record();
 
 	@Id
 	private UUID qualifier;
-
-	@Transient
-	private RecordReference previous;
 
 	@OneToMany
 	private List<Name> names = new ArrayList<Name>();
@@ -111,18 +112,6 @@ public class Record implements Serializable {
 		return locations;
 	}
 
-	public Name getPrimaryName() {
-		return names.get(0);
-	}
-
-	public void setPrimaryName(Name name) {
-		if (names.size() == 0) {
-			names.add(0, name);
-		} else {
-			names.set(0, name);
-		}
-	}
-
 	public Record getPrimaryParent() {
 
 		if (this == ROOT_RECORD) {
@@ -155,22 +144,11 @@ public class Record implements Serializable {
 		this.qualifier = qualifier;
 	}
 
-	public RecordReference getPrevious() {
-		return previous;
-	}
-
-	public void setPrevious(RecordReference previous) {
-		this.previous = previous;
-	}
-
 	@Override
 	public String toString() {
 		ToStringBuilder stringBuilder = new ToStringBuilder(this,
 				ApplicationContext.getInstance().getToStringStyle());
 		stringBuilder.append("qualifier", getQualifier());
-		stringBuilder.append("primaryName", getPrimaryName());
-		stringBuilder.append("lifeteime", getPrimaryName().getLifetime());
-		stringBuilder.append("endDoc", getPrimaryName().getEndDocument());
 		stringBuilder.append("names", names, true);
 		stringBuilder.append("locations", locations, true);
 		return stringBuilder.toString();
