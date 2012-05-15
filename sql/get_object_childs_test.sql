@@ -1,0 +1,1 @@
+SELECT * FROM get_object_childs('094e80e3-b48d-4904-afe0-1da74971245d','15-05-2000','15-05-2012')

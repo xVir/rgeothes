@@ -105,6 +105,10 @@ public class Document implements Serializable {
 	}
 
 	public Date getCreationDate() {
+		if (creationDate == null) {
+			return date;
+		}
+		
 		return creationDate;
 	}
 

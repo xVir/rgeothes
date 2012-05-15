@@ -1,27 +1,29 @@
 -- returns all object history of the object, specified by id
 -- in the specified time frame
 -- all input parameters should not be null
+DROP FUNCTION get_object_childs (object_qualifier uuid,
+ date_begin timestamp,
+ date_end timestamp);
+
 CREATE OR REPLACE FUNCTION get_object_childs(object_qualifier uuid,
  date_begin timestamp,
  date_end timestamp)
-RETURNS SETOF uuid AS $$
+RETURNS uuid[] AS $$
 DECLARE
- result_list uuid[];
- childs_list uuid[];
- temp_list uuid[];
+ result_list uuid[] := '{}';
+ childs_list uuid[] := '{}';
+ temp_list uuid[] := '{}';
  r uuid;
 BEGIN
 
--- SELECT array_append(result_list,object_qualifier) INTO result_list;
-
-  SELECT rec.qualifier FROM record rec
-  	JOIN record_reference r_ref ON rec.belong_to_id=r_ref.id
-  	JOIN record parent_record ON r_ref.record_to_qualifier=parent_record.qualifier
-	JOIN document begin_doc ON r_ref.begin_document_id = begin_doc.id
-	JOIN document end_doc ON r_ref.end_document_id = end_doc.id
-  INTO result_list
+result_list:= ARRAY(  SELECT rec.qualifier FROM record rec
+  	LEFT OUTER JOIN record_reference r_ref ON rec.belong_to_id=r_ref.id
+  	LEFT OUTER JOIN record parent_record ON r_ref.record_to_qualifier=parent_record.qualifier
+	LEFT OUTER JOIN document begin_doc ON r_ref.begin_document_id = begin_doc.id
+	LEFT OUTER JOIN document end_doc ON r_ref.end_document_id = end_doc.id
+ -- INTO result_list
   WHERE parent_record.qualifier=object_qualifier
-  	AND begin_doc.document_date <= date_begin;
+  	AND begin_doc.document_date <= date_begin);
 
  IF result_list <> NULL THEN
  	
@@ -33,7 +35,9 @@ BEGIN
 	
  END IF;
  
- RETURN QUERY SELECT * FROM array_cat(result_list,childs_list);
+ SELECT * FROM array_cat(result_list,childs_list) INTO result_list;
+ 
+ RETURN result_list;
 
 END;
 $$ LANGUAGE plpgsql;
