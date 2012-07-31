@@ -7,8 +7,6 @@
       <xs:element name="contains" type="recordReference" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="locations" type="location"  maxOccurs="unbounded"/>
       <xs:element name="names" type="name" maxOccurs="unbounded"/>
-      <xs:element name="previous" type="recordReference" minOccurs="0"/>
-      <xs:element name="primaryName" type="name" />
       <xs:element name="qualifier" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
