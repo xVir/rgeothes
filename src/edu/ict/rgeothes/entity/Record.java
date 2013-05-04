@@ -121,8 +121,7 @@ public class Record implements Serializable {
 		if (belongTo.size() > 0) {
 			return belongTo.get(0).getRecordTo();
 		} else {
-			throw new IllegalStateException(
-					"Only ROOT_RECORD could not have Parent");
+			return null;
 		}
 	}
 

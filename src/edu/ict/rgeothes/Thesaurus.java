@@ -87,7 +87,7 @@ public class Thesaurus {
 
 		if (query.isNameSpecified()) {
 			
-			List<Record> recordsToFilter = new ArrayList<>();
+			List<Record> recordsToFilter = new ArrayList<Record>();
 			
 			List<Record> recordsByName = searchByName(query.getName());
 

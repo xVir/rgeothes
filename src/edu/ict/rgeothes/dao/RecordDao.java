@@ -102,7 +102,7 @@ public class RecordDao {
 
 	private List<String> createSqlCommands(Record rec) {
 
-		List<String> result = new ArrayList<>();
+		List<String> result = new ArrayList<String>();
 
 		if (rec.getPrimaryParent() != null) {
 			long referenceId = getNextRecordReferenceId();
@@ -158,12 +158,12 @@ public class RecordDao {
 
 	private static String INSERT_POINT_FORMAT = "INSERT INTO " + "location("
 			+ "qualifier,  begin_document_id, end_document_id, location_type, "
-			+ "point_simple) " + "VALUES ('%s', %s, %s, '%s', %s)";
+			+ "location_point) " + "VALUES ('%s', %s, %s, '%s', %s)";
 
 	private String createSqlFromPoint(Record rec, Point loc) {
 		return String.format(INSERT_POINT_FORMAT, rec.getQualifier(), loc
 				.getBeginDocument().getId(), loc.getEndDocument().getId(),
-				"point", String.format("ROW('(%s, %s)')", loc.getLatitude(),
+				"point", String.format("point '(%s, %s)'", loc.getLatitude(),
 						loc.getLongitude()));
 	}
 
